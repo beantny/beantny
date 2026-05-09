@@ -334,6 +334,8 @@
       max-width: 100%;
       white-space: normal;
       word-break: break-word;
+      opacity: 1;
+      visibility: visible;
     }
 
     .social-chip:hover {
@@ -347,12 +349,16 @@
       display: none;
       margin-top: 16px;
       padding: 14px;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .mobile-contact-grid {
       display: grid;
       gap: 12px;
+    }
+
+    .mobile-contact-grid .mini-card {
+      overflow: visible;
     }
 
     .mobile-contact-text {
@@ -364,18 +370,25 @@
     }
 
     .socials-mobile {
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      margin-top: 0;
       width: 100%;
+      margin-top: 8px;
     }
 
     .socials-mobile .social-chip {
-      width: 100%;
-      justify-content: flex-start;
       display: flex;
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 14px;
+      justify-content: flex-start;
+      align-items: center;
       white-space: normal;
-      min-height: 48px;
+      word-break: break-word;
+      overflow: visible;
+      opacity: 1;
+      visibility: visible;
     }
 
     .section-head {
@@ -875,6 +888,16 @@
 
       .mobile-contact-panel { display: block; }
 
+      .mobile-contact-panel .mini-card:last-child {
+        min-height: auto;
+      }
+
+      .socials-mobile,
+      .socials-mobile .social-chip {
+        position: relative;
+        z-index: 3;
+      }
+
       .scroll-hint { display: none; }
 
       .section-head {
@@ -1071,7 +1094,7 @@
 
         <div class="mini-card">
           <div class="mini-label" data-i18n="mobileContactTitle">Contacts</div>
-          <div class="socials socials-mobile">
+          <div class="socials-mobile">
             <a class="social-chip" href="https://t.me/beantny" target="_blank" rel="noopener noreferrer">Telegram: @beantny</a>
             <a class="social-chip" href="https://x.com/beantny" target="_blank" rel="noopener noreferrer">X: @beeantny</a>
             <a class="social-chip" href="https://farcaster.xyz/beantny" target="_blank" rel="noopener noreferrer">Farcaster: @beantny</a>
@@ -1361,7 +1384,7 @@
   document.getElementById('lightboxNext').addEventListener('click', showNext);
 
   lightbox.addEventListener('click', e => {
-    if (e.target === lightbox) closeLightbox();
+        if (e.target === lightbox) closeLightbox();
   });
 
   document.addEventListener('keydown', e => {
@@ -1445,7 +1468,7 @@
 
       cards.forEach((card, index) => {
         const rect = card.getBoundingClientRect();
-        const anchor = vh * 0.22;
+        const anchor = vh * 0.18;
         const distance = Math.abs(rect.top - anchor);
 
         if (distance < bestDistance) {
@@ -1460,25 +1483,24 @@
         card.classList.remove('mobile-active', 'mobile-next-hint', 'mobile-exit');
 
         const rect = card.getBoundingClientRect();
-        const cardH = Math.max(rect.height, 1);
 
-        const start = vh * 0.18;
-        const end = -cardH * 0.28;
-        const raw = (start - rect.top) / (start - end);
-        const progress = Math.max(0, Math.min(1, raw));
+        const exitStart = vh * 0.92;
+        const exitEnd = vh * 0.34;
+        const rawLate = (exitStart - rect.bottom) / (exitStart - exitEnd);
+        const lateProgress = Math.max(0, Math.min(1, rawLate));
 
         if (index < activeIndex) {
-          const exitScale = 1 + progress * 0.18;
-          const exitY = -progress * 36;
-          const exitZ = progress * 180;
-          const exitRotate = -progress * 7;
-          const exitOpacity = 1 - progress * 0.92;
-          const exitBlur = progress * 12;
+          const exitScale = 1.04 + lateProgress * 0.16;
+          const exitY = -lateProgress * 42;
+          const exitZ = lateProgress * 210;
+          const exitRotate = -lateProgress * 7;
+          const exitOpacity = 1 - lateProgress * 0.94;
+          const exitBlur = lateProgress * 14;
 
           card.classList.add('mobile-exit');
           card.style.transform =
             `translate3d(0, ${exitY}px, ${exitZ}px) rotateX(${exitRotate}deg) scale(${exitScale})`;
-          card.style.opacity = String(Math.max(.06, exitOpacity));
+          card.style.opacity = String(Math.max(.05, exitOpacity));
           card.style.filter = `blur(${exitBlur}px)`;
           return;
         }
@@ -1486,12 +1508,12 @@
         if (index === activeIndex) {
           card.classList.add('mobile-active');
 
-          const scale = 1 + progress * 0.12;
-          const y = -progress * 18;
-          const z = progress * 120;
-          const rotate = -progress * 4;
-          const blur = progress * 2.2;
-          const opacity = 1 - progress * 0.08;
+          const scale = 1 + lateProgress * 0.14;
+          const y = -lateProgress * 16;
+          const z = lateProgress * 135;
+          const rotate = -lateProgress * 4;
+          const blur = lateProgress * 2.4;
+          const opacity = 1 - lateProgress * 0.10;
 
           card.style.transform =
             `translate3d(0, ${y}px, ${z}px) rotateX(${rotate}deg) scale(${scale})`;
@@ -1504,15 +1526,16 @@
           card.classList.add('mobile-next-hint');
 
           const prevRect = cards[activeIndex].getBoundingClientRect();
-          const takeover = Math.max(0, Math.min(1, 1 - ((prevRect.bottom - vh * 0.72) / (vh * 0.42))));
+          const takeoverRaw = (vh * 0.88 - prevRect.bottom) / (vh * 0.54);
+          const takeover = Math.max(0, Math.min(1, takeoverRaw));
 
-          const x = 28 - takeover * 28;
-          const y = 34 - takeover * 34;
-          const z = -140 + takeover * 140;
-          const scale = 0.92 + takeover * 0.08;
-          const rotate = 7 - takeover * 7;
-          const opacity = 0.42 + takeover * 0.58;
-          const blur = 10 - takeover * 10;
+          const x = 24 - takeover * 24;
+          const y = 36 - takeover * 36;
+          const z = -170 + takeover * 170;
+          const scale = 0.91 + takeover * 0.09;
+          const rotate = 8 - takeover * 8;
+          const opacity = 0.32 + takeover * 0.68;
+          const blur = 12 - takeover * 12;
 
           card.style.transform =
             `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotate}deg) scale(${scale})`;
@@ -1522,7 +1545,7 @@
         }
 
         card.style.transform = 'translate3d(0, 56px, -220px) rotateX(10deg) scale(.9)';
-        card.style.opacity = '.18';
+        card.style.opacity = '.16';
         card.style.filter = 'blur(12px)';
       });
     };
