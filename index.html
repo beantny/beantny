@@ -345,50 +345,77 @@
       box-shadow: 0 0 28px rgba(79,140,255,.14);
     }
 
+    .social-chip {
+      white-space: nowrap;
+    }
+
+    .social-chip .social-label {
+      opacity: .92;
+    }
+
+    .social-chip .social-handle {
+      opacity: .98;
+      color: #dfe7ff;
+    }
+
     .mobile-contact-panel {
       display: none;
       margin-top: 16px;
-      padding: 14px;
+      padding: 12px;
       overflow: visible;
     }
 
     .mobile-contact-grid {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .mobile-contact-grid .mini-card {
       overflow: visible;
+      padding: 14px;
+    }
+
+    .mobile-contacts-card {
+      padding-bottom: 12px;
     }
 
     .mobile-contact-text {
-      font-size: .98rem;
-      line-height: 1.55;
+      font-size: .9rem;
+      line-height: 1.42;
       color: var(--muted);
       max-width: 100%;
       word-break: break-word;
     }
 
     .socials-mobile {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
       width: 100%;
-      margin-top: 8px;
+      margin-top: 4px;
+      align-items: stretch;
     }
 
     .socials-mobile .social-chip {
       display: flex;
       width: 100%;
-      min-height: 50px;
-      padding: 12px 14px;
-      justify-content: flex-start;
+      max-width: 100%;
+      min-height: 36px;
+      padding: 8px 10px;
+      justify-content: center;
       align-items: center;
-      white-space: normal;
-      word-break: break-word;
-      overflow: visible;
+      gap: 4px;
+      white-space: nowrap;
+      word-break: normal;
+      overflow: hidden;
+      text-overflow: clip;
       opacity: 1;
       visibility: visible;
+      font-size: .69rem;
+      line-height: 1.05;
+      font-weight: 700;
+      border-radius: 999px;
+      flex: none;
     }
 
     .section-head {
@@ -784,7 +811,16 @@
       letter-spacing: .08em;
     }
 
-    @media (max-width: 1100px) {
+        .project-stage {
+      flex: 0 0 min(960px, calc(100vw - 56px));
+      min-width: 0;
+    }
+
+    .project-stage > .project-card {
+      width: 100%;
+    }
+
+@media (max-width: 1100px) {
       .hero { grid-template-columns: 1fr; }
       .hero-aside { grid-template-columns: 1fr 1fr; }
     }
@@ -869,7 +905,7 @@
       }
 
       .hero-main {
-        padding: 22px 18px;
+        padding: 20px 16px;
         min-height: auto;
       }
 
@@ -882,6 +918,11 @@
 
       .mobile-contact-panel { display: block; }
       .mobile-contact-panel .mini-card:last-child { min-height: auto; }
+      .mobile-contact-panel { padding: 10px; }
+      .mobile-contact-grid { gap: 10px; }
+      .mobile-contact-grid .mini-card { padding: 13px 14px; border-radius: 20px; }
+      .mobile-contact-grid .mini-label { margin-bottom: 6px; font-size: .68rem; }
+      .mobile-contact-text { font-size: .88rem; line-height: 1.38; }
 
       .socials-mobile,
       .socials-mobile .social-chip {
@@ -892,14 +933,12 @@
       .scroll-hint { display: none; }
 
       .section-head {
-        margin: 30px 0 14px;
+        margin: 24px 0 12px;
         align-items: flex-start;
       }
 
       .projects-track {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
+        display: block;
         overflow: visible;
         padding-top: 0;
         margin-top: 0;
@@ -918,40 +957,43 @@
         cursor: auto;
       }
 
+      .project-stage {
+        display: block;
+        margin: 0 0 18px;
+      }
+
       .project-card {
+        position: relative;
         flex: none;
         width: 100%;
         min-width: 0;
         max-width: 100%;
         grid-template-columns: 1fr;
-        padding: 14px;
-        opacity: 1;
-        transform: translate3d(0,0,0) scale(1);
-        transform-origin: 50% 40%;
-        transform-style: preserve-3d;
-        will-change: transform, opacity, filter;
-        transition:
-          transform .22s linear,
-          opacity .22s linear,
-          filter .22s linear,
-          box-shadow .28s ease;
-      }
-
-      .project-card.mobile-enter {
+        padding: 12px;
         opacity: 0;
-        transform: translate3d(0, 40px, -80px) scale(.96);
-        filter: blur(8px);
+        transform: translateY(26px) scale(.985);
+        transform-origin: 50% 50%;
+        will-change: transform, opacity;
+        transition:
+          transform .6s cubic-bezier(.16,1,.3,1),
+          opacity .6s cubic-bezier(.16,1,.3,1),
+          box-shadow .28s ease,
+          border-color .28s ease;
       }
 
       .project-card.mobile-visible {
         opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-        filter: blur(0);
+        transform: translateY(0) scale(1);
+      }
+
+      .project-card.mobile-reveal-soft {
+        opacity: .82;
+        transform: translateY(12px) scale(.992);
       }
 
       .project-card.mobile-active {
         box-shadow:
-          0 28px 80px rgba(0,0,0,.48),
+          0 20px 56px rgba(0,0,0,.34),
           0 0 0 1px rgba(255,255,255,.04),
           inset 0 1px 0 rgba(255,255,255,.02);
       }
@@ -959,30 +1001,72 @@
       .project-visual { gap: 10px; }
 
       .project-cover {
-        aspect-ratio: 1.14 / 1;
+        aspect-ratio: 2.2 / 1;
       }
 
       .thumbs {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 3px;
+      }
+
+      .thumb {
+        aspect-ratio: 1.22 / 1;
       }
 
       .project-body { gap: 12px; }
       .project-title { gap: 8px; }
 
       .project-title h3 {
-        font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2rem);
+        font-size: clamp(1.18rem, .98rem + .72vw, 1.46rem);
+        line-height: .98;
       }
 
       .meta-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .meta {
+        padding: 7px 8px 8px;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-self: start;
+      }
+
+      .meta strong {
+        font-size: .52rem;
+        margin-bottom: 3px;
+        letter-spacing: .06em;
+      }
+
+      .meta span {
+        font-size: .64rem;
+        line-height: 1.12;
       }
 
       .socials-mobile .social-chip,
       .socials .social-chip {
-        font-size: .9rem;
         line-height: 1.35;
+      }
+
+      .socials-mobile .social-chip {
+        font-size: .6rem;
+        line-height: 1.02;
+        padding: 6px 7px;
+        min-height: 32px;
+        gap: 3px;
+      }
+
+      .socials-mobile .social-chip .social-label,
+      .socials-mobile .social-chip .social-handle {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .lightbox-nav { width: 36px; height: 36px; font-size: 1.35rem; }
@@ -1027,7 +1111,7 @@
           <h1 data-i18n="heroTitle">Digital products, games and decks <br> I designed.</h1>
           <p data-i18n="heroText">I build interfaces, visual systems and presentations — from Web3 games and wallets to sports portals and exhibition graphics.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#projects" data-i18n="heroPrimary">View selected work</a>
+            <a class="btn btn-primary" href="#projects" data-i18n="heroPrimary">View swipe cards</a>
             <a class="btn btn-secondary" id="contact" href="mailto:beantny@icloud.com" data-i18n="heroContact">Contact</a>
           </div>
         </div>
@@ -1070,7 +1154,7 @@
           <div class="mobile-contact-text" data-i18n="miniAvailableText">UI/UX collaborations, product design, decks</div>
         </div>
 
-        <div class="mini-card">
+        <div class="mini-card mobile-contacts-card">
           <div class="mini-label" data-i18n="mobileContactTitle">Contacts</div>
           <div class="socials-mobile">
             <a class="social-chip" href="https://t.me/beantny" target="_blank" rel="noopener noreferrer">Telegram: @beantny</a>
@@ -1085,12 +1169,13 @@
       <div class="section-head">
         <div>
           <h2 data-i18n="projectsTitle">My Design Projects</h2>
-          <p data-i18n="projectsText">Scroll horizontally to browse all 6 projects.</p>
+          <p data-i18n="projectsText">Swipe through 6 selected projects.</p>
         </div>
-        <span class="scroll-hint" data-i18n="scrollHint">← swipe / drag →</span>
+        <span class="scroll-hint" data-i18n="scrollHint">← swipe cards →</span>
       </div>
 
       <div class="projects-track" id="projectsTrack">
+              <div class="project-stage">
         <article class="project-card panel project-tone-pets">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project1-cover.jpg">
@@ -1120,7 +1205,9 @@
             <div class="gallery-note" data-i18n="p1note">Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.</div>
           </div>
         </article>
+      </div>
 
+      <div class="project-stage">
         <article class="project-card panel project-tone-treasure">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project2-cover.jpg">
@@ -1150,7 +1237,9 @@
             <div class="gallery-note" data-i18n="p2note">Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.</div>
           </div>
         </article>
+      </div>
 
+      <div class="project-stage">
         <article class="project-card panel project-tone-wallet">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project3-cover.jpg">
@@ -1180,7 +1269,9 @@
             <div class="gallery-note" data-i18n="p3note">Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.</div>
           </div>
         </article>
+      </div>
 
+      <div class="project-stage">
         <article class="project-card panel project-tone-swap">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project4-cover.jpg">
@@ -1210,7 +1301,9 @@
             <div class="gallery-note" data-i18n="p4note">Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.</div>
           </div>
         </article>
+      </div>
 
+      <div class="project-stage">
         <article class="project-card panel project-tone-snow">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project5-cover.jpg">
@@ -1240,7 +1333,9 @@
             <div class="gallery-note" data-i18n="p5note">Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.</div>
           </div>
         </article>
+      </div>
 
+      <div class="project-stage">
         <article class="project-card panel project-tone-graphic">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project6-cover.jpg">
@@ -1270,7 +1365,7 @@
             <div class="gallery-note" data-i18n="p6note">Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation.</div>
           </div>
         </article>
-      </div>
+      </div></div>
     </section>
 
     <footer class="footer" data-i18n="footerText">
@@ -1293,7 +1388,6 @@
   const isMobile = () => mqMobile.matches;
 
   track.addEventListener('pointerdown', e => {
-    if (isMobile()) return;
     isPointerDown = true;
     hasDragged = false;
     startX = e.clientX;
@@ -1302,7 +1396,7 @@
   });
 
   window.addEventListener('pointermove', e => {
-    if (!isPointerDown || isMobile()) return;
+    if (!isPointerDown) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 6) hasDragged = true;
     track.scrollLeft = startScrollLeft - dx;
@@ -1373,18 +1467,15 @@
   });
 
   let mobileObserver = null;
-  let rafId = null;
   let mobileScrollHandler = null;
   let mobileResizeHandler = null;
+  let mobileRaf = null;
 
   function clearMobileStates() {
     document.querySelectorAll('.project-card').forEach(card => {
-      card.classList.remove('mobile-enter', 'mobile-visible', 'mobile-active');
+      card.classList.remove('mobile-visible', 'mobile-active', 'mobile-reveal-soft');
       card.style.transform = '';
       card.style.opacity = '';
-      card.style.filter = '';
-      card.style.zIndex = '';
-      card.style.pointerEvents = '';
     });
 
     if (mobileObserver) {
@@ -1393,7 +1484,8 @@
     }
 
     if (mobileScrollHandler) {
-      window.removeEventListener('scroll', mobileScrollHandler);
+      const track = document.getElementById('projectsTrack');
+      track && track.removeEventListener('scroll', mobileScrollHandler);
       mobileScrollHandler = null;
     }
 
@@ -1402,148 +1494,59 @@
       mobileResizeHandler = null;
     }
 
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
+    if (mobileRaf) {
+      cancelAnimationFrame(mobileRaf);
+      mobileRaf = null;
     }
   }
 
   function setupMobileProjectFlow() {
+    const track = document.getElementById('projectsTrack');
+    const stages = [...document.querySelectorAll('.project-stage')];
     const cards = [...document.querySelectorAll('.project-card')];
-    if (!cards.length) return;
+    if (!track || !cards.length || !stages.length) return;
 
-    cards.forEach(card => card.classList.add('mobile-enter'));
+    cards.forEach(card => card.classList.add('mobile-visible'));
 
-    if ('IntersectionObserver' in window) {
-      mobileObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('mobile-visible');
-            mobileObserver.unobserve(entry.target);
-          }
-        });
-      }, {
-        root: null,
-        threshold: 0.08,
-        rootMargin: '0px 0px -8% 0px'
-      });
-
-      cards.forEach(card => mobileObserver.observe(card));
-    } else {
-      cards.forEach(card => card.classList.add('mobile-visible'));
-    }
-
-    const updateCards = () => {
-      if (!window.matchMedia('(max-width:760px)').matches) return;
-
-      const vh = window.innerHeight;
+    const updateActiveCard = () => {
+      const trackRect = track.getBoundingClientRect();
+      const center = trackRect.left + trackRect.width / 2;
       let activeIndex = 0;
-      let bestDistance = Infinity;
+      let best = Infinity;
 
-      cards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
-        const anchor = vh * 0.22;
-        const distance = Math.abs(rect.top - anchor);
-
-        if (distance < bestDistance) {
-          bestDistance = distance;
+      stages.forEach((stage, index) => {
+        const rect = stage.getBoundingClientRect();
+        const stageCenter = rect.left + rect.width / 2;
+        const dist = Math.abs(stageCenter - center);
+        if (dist < best) {
+          best = dist;
           activeIndex = index;
         }
       });
 
       cards.forEach((card, index) => {
-        if (!card.classList.contains('mobile-visible')) return;
-
-        card.classList.remove('mobile-active');
-        card.style.pointerEvents = 'auto';
-
-        const rect = card.getBoundingClientRect();
-
-        if (index < activeIndex) {
-          const start = vh * 0.92;
-          const end = vh * 0.30;
-          const raw = (start - rect.bottom) / (start - end);
-          const progress = Math.max(0, Math.min(1, raw));
-
-          const scale = 1 + progress * 0.08;
-          const y = -progress * 28;
-          const z = 90 + progress * 80;
-          const opacity = 0.22 - progress * 0.16;
-          const blur = 10 + progress * 6;
-
-          card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
-          card.style.opacity = String(Math.max(0.04, opacity));
-          card.style.filter = `blur(${blur}px)`;
-          card.style.zIndex = '1';
-          card.style.pointerEvents = 'none';
-          return;
-        }
-
+        card.classList.remove('mobile-active', 'mobile-reveal-soft');
         if (index === activeIndex) {
-          const start = vh * 0.92;
-          const end = vh * 0.28;
-          const raw = (start - rect.bottom) / (start - end);
-          const progress = Math.max(0, Math.min(1, raw));
-
-          const scale = 1 + progress * 0.055;
-          const y = -progress * 12;
-          const z = progress * 24;
-          const opacity = 1 - progress * 0.08;
-          const blur = progress * 1.6;
-
           card.classList.add('mobile-active');
-          card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
-          card.style.opacity = String(opacity);
-          card.style.filter = `blur(${blur}px)`;
-          card.style.zIndex = '5';
-          return;
+        } else {
+          card.classList.add('mobile-reveal-soft');
         }
-
-        if (index === activeIndex + 1) {
-          const prevRect = cards[activeIndex].getBoundingClientRect();
-          const raw = (vh * 0.94 - prevRect.bottom) / (vh * 0.60);
-          const reveal = Math.max(0, Math.min(1, raw));
-
-          const y = 58 - reveal * 58;
-          const z = -150 + reveal * 150;
-          const scale = 0.92 + reveal * 0.08;
-          const opacity = 0.34 + reveal * 0.66;
-          const blur = 12 - reveal * 12;
-
-          card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
-          card.style.opacity = String(opacity);
-          card.style.filter = `blur(${blur}px)`;
-          card.style.zIndex = '4';
-          return;
-        }
-
-        const depth = Math.min(index - activeIndex - 1, 3);
-        const y = 66 + depth * 18;
-        const z = -180 - depth * 70;
-        const scale = 0.9 - depth * 0.03;
-        const opacity = Math.max(0.08, 0.18 - depth * 0.03);
-        const blur = 12 + depth * 2;
-
-        card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
-        card.style.opacity = String(opacity);
-        card.style.filter = `blur(${blur}px)`;
-        card.style.zIndex = String(3 - depth);
       });
     };
 
     mobileScrollHandler = () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(updateCards);
+      if (mobileRaf) cancelAnimationFrame(mobileRaf);
+      mobileRaf = requestAnimationFrame(updateActiveCard);
     };
 
     mobileResizeHandler = () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(updateCards);
+      if (mobileRaf) cancelAnimationFrame(mobileRaf);
+      mobileRaf = requestAnimationFrame(updateActiveCard);
     };
 
-    updateCards();
-    window.addEventListener('scroll', mobileScrollHandler, { passive: true });
+    track.addEventListener('scroll', mobileScrollHandler, { passive: true });
     window.addEventListener('resize', mobileResizeHandler);
+    updateActiveCard();
   }
 
   function handleResponsiveMode() {
@@ -1553,11 +1556,9 @@
       setupMobileProjectFlow();
     } else {
       document.querySelectorAll('.project-card').forEach(card => {
+        card.classList.remove('mobile-visible', 'mobile-active', 'mobile-reveal-soft');
         card.style.transform = '';
         card.style.opacity = '';
-        card.style.filter = '';
-        card.style.zIndex = '';
-        card.style.pointerEvents = '';
       });
     }
   }
@@ -1573,7 +1574,7 @@
       eyebrow:"Anton Bekker · Product & UI",
       heroTitle:"Digital products, games and decks <br> I designed.",
       heroText:"I build interfaces, visual systems and presentations — from Web3 games and wallets to sports portals and exhibition graphics.",
-      heroPrimary:"View selected work",
+      heroPrimary:"View swipe cards",
       heroContact:"Contact",
       miniProjects:"Projects",
       miniFocus:"Focus",
@@ -1582,8 +1583,8 @@
       miniAvailableText:"UI/UX collaborations, product design, decks",
       mobileContactTitle:"Contacts",
       projectsTitle:"My Design Projects",
-      projectsText:"Scroll horizontally to browse all 6 projects.",
-      scrollHint:"← swipe / drag →",
+      projectsText:"Swipe through 6 selected projects.",
+      scrollHint:"← swipe cards →",
       footerText:"Anton Bekker — UI / Product / Visual Design",
       roleLabel:"Role",
       focusLabel:"Focus",
