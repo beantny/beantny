@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Anton Bekker — Portfolio</title>
   <meta name="description" content="Portfolio of Anton Bekker — UI, product and visual design." />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap&subset=cyrillic" rel="stylesheet">
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=clash-display@500,600,700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #050814;
@@ -29,8 +32,10 @@
       --sh-lg: 0 20px 80px rgba(0,0,0,.65);
       --font: 'Satoshi', system-ui, sans-serif;
       --display: 'Clash Display', 'Satoshi', system-ui, sans-serif;
+      --display-ru: 'Unbounded', 'Satoshi', sans-serif;
       --ease: 200ms cubic-bezier(.16,1,.3,1);
     }
+
     *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body {
@@ -42,24 +47,30 @@
       min-height: 100dvh;
       overflow-x: hidden;
     }
+
     img { display: block; max-width: 100%; height: auto; }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; cursor: pointer; border: none; background: none; }
 
-    /* ── Layout shell ── */
     .shell {
       max-width: 1400px;
       margin: 0 auto;
       padding: 16px 20px 60px;
     }
 
-    /* ── Header ── */
     .header {
-      position: sticky; top: 0; z-index: 30;
-      padding-top: 14px; padding-bottom: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      padding-top: 14px;
+      padding-bottom: 10px;
     }
+
     .header-bar {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       padding: 12px 16px;
       background: rgba(9,13,26,.82);
       backdrop-filter: blur(20px);
@@ -67,107 +78,300 @@
       border-radius: var(--r-pill);
       box-shadow: var(--sh);
     }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: .9rem; }
-    .brand-mark {
-      width: 40px; height: 40px; min-width: 40px; min-height: 40px;
-      border-radius: 999px; overflow: hidden; flex-shrink: 0;
-      background: transparent; color: #fff; line-height: 0;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: .9rem;
     }
-    .brand-mark img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; border-radius: 999px; display: block; transform: scale(1.08); }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 999px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: transparent;
+      color: #fff;
+      line-height: 0;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 42%;
+      border-radius: 999px;
+      display: block;
+      transform: scale(1.08);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
     .nav { display: flex; gap: 4px; }
+
     .nav a {
-      padding: 8px 14px; border-radius: var(--r-pill);
-      font-size: .875rem; color: var(--muted);
+      padding: 8px 14px;
+      border-radius: var(--r-pill);
+      font-size: .875rem;
+      color: var(--muted);
       transition: background var(--ease), color var(--ease);
     }
-    .nav a:hover { background: var(--surface2); color: var(--text); }
 
-    /* ── Hero ── */
+    .nav a:hover {
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+
+    .lang-btn {
+      min-width: 46px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      transition: background var(--ease), color var(--ease), box-shadow var(--ease);
+    }
+
+    .lang-btn.active {
+      background: rgba(79,140,255,.18);
+      color: #dfe9ff;
+      box-shadow: 0 0 24px rgba(79,140,255,.18), inset 0 0 0 1px rgba(79,140,255,.16);
+    }
+
+    .panel {
+      background:
+        radial-gradient(1200px 600px at 0% 0%, rgba(79,140,255,.12), transparent 45%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
+        var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--sh);
+      border-radius: 32px;
+    }
+
     .hero {
       display: grid;
-      grid-template-columns: 1fr 320px;
+      grid-template-columns: 1.25fr .75fr;
       gap: 16px;
-      padding: 20px 0 16px;
+      margin-top: 12px;
     }
-    .panel {
-      background: rgba(9,13,26,.88);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      backdrop-filter: blur(18px);
-      box-shadow: var(--sh);
-    }
+
     .hero-main {
-      padding: clamp(22px,2.5vw,36px);
+      padding: 28px;
       min-height: 440px;
-      display: flex; flex-direction: column; justify-content: space-between;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
+
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 5px 12px; border-radius: var(--r-pill);
-      background: var(--surface2); border: 1px solid var(--border);
-      font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: var(--r-pill);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
     }
+
     .hero-main h1 {
       font: 700 clamp(2rem,1.4rem + 2.2vw,4rem)/.96 var(--display);
       letter-spacing: -.04em;
       margin: 16px 0 12px;
-      max-width: 12ch;
+      max-width: 14ch;
     }
-    .hero-main > div > p { color: var(--muted); max-width: 56ch; margin-bottom: 24px; }
-    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+
+    .hero-main > div > p {
+      color: var(--muted);
+      max-width: 56ch;
+      margin-bottom: 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 20px; border-radius: var(--r-md);
-      font-weight: 700; font-size: .9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: var(--r-md);
+      font-weight: 700;
+      font-size: .9rem;
       border: 1px solid var(--border);
       transition: all var(--ease);
     }
-    .btn-primary { background: var(--accent); color: #050814; border-color: transparent; }
-    .btn-primary:hover { background: #7aa5ff; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #050814;
+      border-color: transparent;
+      box-shadow: 0 0 30px rgba(79,140,255,.14);
+    }
+
+    .btn-primary:hover {
+      background: #7aa5ff;
+      box-shadow: 0 0 36px rgba(79,140,255,.22);
+    }
+
     .btn-secondary { background: var(--surface); }
     .btn-secondary:hover { background: var(--surface2); }
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag {
-      padding: 6px 12px; border-radius: var(--r-pill);
-      background: var(--surface); border: 1px solid var(--border);
-      font-size: .8rem; color: var(--muted);
-    }
-    .hero-aside { padding: 16px; display: grid; gap: 12px; align-content: start; }
-    .mini-card {
-      padding: 16px; border-radius: var(--r-md);
-      background: var(--surface2); border: 1px solid var(--border);
-    }
-    .mini-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--faint); margin-bottom: 8px; }
-    .metric { font: 700 clamp(1.8rem,1.2rem + 1.4vw,2.6rem)/1 var(--display); }
 
-    /* ── Section header ── */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 12px;
+      border-radius: var(--r-pill);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    .hero-aside {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .mini-card {
+      padding: 16px;
+      border-radius: var(--r-md);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .mini-label {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--faint);
+      margin-bottom: 8px;
+    }
+
+    .metric {
+      font: 700 clamp(1.8rem,1.2rem + 1.4vw,2.6rem)/1 var(--display);
+    }
+
+    .socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .social-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(79,140,255,.10);
+      border: 1px solid rgba(79,140,255,.22);
+      color: #d7e4ff;
+      font-weight: 700;
+      font-size: .88rem;
+      transition: transform var(--ease), background var(--ease), border-color var(--ease), box-shadow var(--ease);
+      box-shadow: 0 0 0 rgba(79,140,255,0);
+    }
+
+    .social-chip:hover {
+      transform: translateY(-1px);
+      background: rgba(79,140,255,.16);
+      border-color: rgba(79,140,255,.34);
+      box-shadow: 0 0 28px rgba(79,140,255,.14);
+    }
+
     .section-head {
-      display: flex; align-items: flex-end; justify-content: space-between;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
       gap: 16px;
       margin: 36px 0 16px;
     }
-    .section-head h2 { font: 700 clamp(1.5rem,1.2rem + 1vw,2rem)/1.05 var(--display); letter-spacing: -.03em; }
-    .section-head p { color: var(--muted); font-size: .9rem; max-width: 50ch; }
-    .scroll-hint { font-size: .78rem; color: var(--faint); white-space: nowrap; }
 
-    /* ── Projects horizontal scroll ── */
+    .section-head h2 {
+      font: 700 clamp(1.5rem,1.2rem + 1vw,2rem)/1.05 var(--display);
+      letter-spacing: -.03em;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: .9rem;
+      max-width: 50ch;
+    }
+
+    .scroll-hint {
+      font-size: .78rem;
+      color: var(--faint);
+      white-space: nowrap;
+    }
+
     .projects-track {
       display: flex;
       flex-direction: row;
       gap: 16px;
       overflow-x: auto;
-      scroll-snap-type: x mandatory;
+      overflow-y: visible;
+      scroll-snap-type: x proximity;
       -webkit-overflow-scrolling: touch;
+      padding-top: 6px;
+      margin-top: -6px;
       padding-bottom: 12px;
       cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-x;
+      overscroll-behavior-x: contain;
+      scroll-behavior: smooth;
     }
-    .projects-track:active { cursor: grabbing; }
+
+    .projects-track.dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
+    }
+
     .projects-track::-webkit-scrollbar { height: 4px; }
     .projects-track::-webkit-scrollbar-track { background: transparent; }
     .projects-track::-webkit-scrollbar-thumb {
       background: rgba(255,255,255,.12);
       border-radius: 999px;
     }
+
     .project-card {
       flex: 0 0 min(960px, calc(100vw - 56px));
       scroll-snap-align: start;
@@ -175,72 +379,246 @@
       grid-template-columns: 1.1fr .9fr;
       gap: 14px;
       padding: 14px;
+      -webkit-user-drag: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
     }
-    .project-visual { display: flex; flex-direction: column; gap: 12px; }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: .92;
+      z-index: 0;
+    }
+
+    .project-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-tone-pets::before {
+      background:
+        radial-gradient(700px 280px at 0% 0%, rgba(196, 92, 255, .20), transparent 48%),
+        linear-gradient(180deg, rgba(120, 46, 180, .07), rgba(0,0,0,0));
+    }
+
+    .project-tone-pets {
+      border-color: rgba(196, 92, 255, .20);
+      box-shadow: 0 8px 32px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.02);
+    }
+
+    .project-tone-treasure::before {
+      background:
+        radial-gradient(700px 280px at 0% 0%, rgba(244, 201, 93, .16), transparent 48%),
+        linear-gradient(180deg, rgba(180, 120, 20, .05), rgba(0,0,0,0));
+    }
+
+    .project-tone-treasure {
+      border-color: rgba(244, 201, 93, .16);
+    }
+
+    .project-tone-wallet::before {
+      background:
+        radial-gradient(700px 280px at 0% 0%, rgba(79, 140, 255, .16), transparent 48%),
+        linear-gradient(180deg, rgba(52, 108, 255, .05), rgba(0,0,0,0));
+    }
+
+    .project-tone-wallet {
+      border-color: rgba(79, 140, 255, .18);
+    }
+
+    .project-tone-swap::before {
+      background:
+        radial-gradient(700px 280px at 0% 0%, rgba(130, 210, 255, .12), transparent 48%),
+        linear-gradient(180deg, rgba(255,255,255,.035), rgba(0,0,0,0));
+    }
+
+    .project-tone-swap {
+      border-color: rgba(130, 210, 255, .14);
+    }
+
+    .project-tone-snow::before {
+      background:
+        radial-gradient(700px 280px at 0% 0%, rgba(163, 220, 255, .16), transparent 48%),
+        linear-gradient(180deg, rgba(120, 180, 255, .05), rgba(0,0,0,0));
+    }
+
+    .project-tone-snow {
+      border-color: rgba(163, 220, 255, .16);
+    }
+
+    .project-tone-graphic::before {
+      background:
+        radial-gradient(700px 280px at 0% 0%, rgba(82, 188, 146, .18), transparent 48%),
+        linear-gradient(180deg, rgba(24, 92, 72, .06), rgba(0,0,0,0));
+    }
+
+    .project-tone-graphic {
+      border-color: rgba(82, 188, 146, .18);
+    }
+
+    .project-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
     .project-cover {
-      border-radius: var(--r-xl); overflow: hidden;
+      border-radius: var(--r-xl);
+      overflow: hidden;
       aspect-ratio: 16 / 9;
       border: 1px solid var(--border);
       background: var(--surface2);
       cursor: pointer;
     }
+
     .project-cover img {
-      width: 100%; height: 100%; object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       transition: transform .4s ease;
+      pointer-events: none;
+      -webkit-user-drag: none;
     }
+
     .project-cover:hover img { transform: scale(1.02); }
-    .thumbs { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 10px;
+    }
+
     .thumb {
-      border-radius: var(--r-md); overflow: hidden;
+      border-radius: var(--r-md);
+      overflow: hidden;
       aspect-ratio: 1;
       border: 1px solid var(--border);
       background: var(--surface2);
       cursor: pointer;
     }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .3s ease;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
     .thumb:hover img { transform: scale(1.05); }
-    .project-body { display: flex; flex-direction: column; gap: 14px; padding: 4px 0; }
-    .project-title { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 6px; }
+
+    .project-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 4px 0;
+    }
+
+    .project-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
     .project-title h3 {
       font: 700 clamp(1.6rem,1.1rem + 1.2vw,2.4rem)/1.05 var(--display);
       letter-spacing: -.03em;
     }
+
     .pill {
-      display: inline-flex; align-items: center;
-      padding: 6px 12px; border-radius: var(--r-pill);
-      background: var(--accent-hi); color: var(--accent);
-      font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: var(--r-pill);
+      background: var(--accent-hi);
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
     }
-    .project-body > div > p { color: var(--muted); font-size: .9rem; }
-    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .project-body > div > p {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
     .meta {
-      padding: 12px 14px; border-radius: var(--r-md);
-      background: var(--surface2); border: 1px solid var(--border);
+      padding: 12px 14px;
+      border-radius: var(--r-md);
+      background: rgba(15,22,36,.82);
+      border: 1px solid var(--border);
       font-size: .82rem;
+      line-height: 1.45;
+      backdrop-filter: blur(8px);
     }
+
     .meta strong {
-      display: block; font-size: .7rem; text-transform: uppercase;
-      letter-spacing: .08em; color: var(--faint); margin-bottom: 3px;
+      display: block;
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--faint);
+      margin-bottom: 6px;
     }
+
+    .meta span {
+      display: block;
+    }
+
     .gallery-note {
-      padding: 14px 16px; border-radius: var(--r-md);
-      background: rgba(15,22,36,.8); border: 1px solid var(--border);
-      font-size: .85rem; color: var(--muted);
+      padding: 14px 16px;
+      border-radius: var(--r-md);
+      background: rgba(15,22,36,.8);
+      border: 1px solid var(--border);
+      font-size: .85rem;
+      color: var(--muted);
+      backdrop-filter: blur(8px);
     }
 
-    /* ── Footer ── */
-    .footer { padding: 40px 0 20px; color: var(--faint); font-size: .8rem; }
+    .footer {
+      padding: 40px 0 20px;
+      color: var(--faint);
+      font-size: .8rem;
+    }
 
-    /* ── Lightbox ── */
     .lightbox {
       display: none;
-      position: fixed; inset: 0; z-index: 100;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
       background: rgba(0,0,0,.82);
       backdrop-filter: blur(10px);
-      align-items: center; justify-content: center;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
     }
+
     .lightbox.open { display: flex; }
+
     .lightbox-img {
       max-width: min(1100px, 100%);
       max-height: 90vh;
@@ -248,24 +626,106 @@
       box-shadow: var(--sh-lg);
       object-fit: contain;
     }
-    .lightbox-close {
-      position: fixed; top: 20px; right: 24px;
-      width: 44px; height: 44px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--r-pill);
-      background: rgba(255,255,255,.1);
-      color: #fff; font-size: 1.4rem;
-      transition: background var(--ease);
-    }
-    .lightbox-close:hover { background: rgba(255,255,255,.2); }
 
-    /* ── Responsive ── */
+    .lightbox-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      font-size: 1.4rem;
+      line-height: 1;
+      padding: 0;
+      transition: background var(--ease);
+      z-index: 102;
+    }
+
+    .lightbox-close:hover { background: rgba(255,255,255,.2); }
+    .lightbox-close span { display: inline-block; transform: translateY(-1px); }
+
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(8,12,24,.42);
+      border: 1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.92);
+      font-size: 1.5rem;
+      line-height: 1;
+      padding: 0;
+      backdrop-filter: blur(10px);
+      transition: background .2s ease, opacity .2s ease;
+      z-index: 101;
+      opacity: .72;
+    }
+
+    .lightbox-nav span { display: inline-block; transform: translateY(-2px); }
+    .lightbox-nav:hover { background: rgba(8,12,24,.7); opacity: 1; }
+    .lightbox-prev { left: 14px; }
+    .lightbox-next { right: 14px; }
+
+    html[lang="ru"] .hero-main h1,
+    html[lang="ru"] .section-head h2,
+    html[lang="ru"] .project-title h3 {
+      font-family: var(--display-ru);
+      letter-spacing: -.06em;
+    }
+
+    html[lang="ru"] .hero-main h1 {
+      font-weight: 742;
+      font-size: clamp(1.5rem, 1.02rem + 1.35vw, 2.7rem);
+      line-height: .9;
+      max-width: 15.6ch;
+      text-transform: none;
+    }
+
+    html[lang="ru"] .section-head h2 {
+      font-weight: 700;
+      font-size: clamp(1.26rem, 1rem + .7vw, 1.72rem);
+      line-height: .96;
+      text-transform: none;
+    }
+
+    html[lang="ru"] .project-title h3 {
+      font-weight: 700;
+      font-size: clamp(1.28rem, .98rem + .82vw, 1.9rem);
+      line-height: .98;
+      text-transform: none;
+    }
+
+    html[lang="ru"] .pill,
+    html[lang="ru"] .mini-label,
+    html[lang="ru"] .eyebrow {
+      letter-spacing: .08em;
+    }
+
     @media (max-width: 1100px) {
       .hero { grid-template-columns: 1fr; }
       .hero-aside { grid-template-columns: 1fr 1fr; }
     }
+
+    @media (max-width: 980px) {
+      .header-bar { align-items: flex-start; }
+      .header-right { width: 100%; justify-content: space-between; }
+    }
+
     @media (max-width: 760px) {
       .shell { padding: 12px 14px 48px; }
+      .header-bar { flex-direction: column; align-items: stretch; }
+      .header-right { width: 100%; justify-content: space-between; }
+      .nav { flex-wrap: wrap; }
       .project-card {
         flex: 0 0 calc(100vw - 28px);
         grid-template-columns: 1fr;
@@ -273,7 +733,11 @@
       .thumbs { grid-template-columns: repeat(4,1fr); }
       .nav a { padding: 8px 10px; font-size: .82rem; }
       .meta-grid { grid-template-columns: 1fr; }
+      .lightbox-nav { width: 36px; height: 36px; font-size: 1.35rem; }
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
     }
+
     @media (max-width: 480px) {
       .thumbs { grid-template-columns: repeat(2,1fr); }
     }
@@ -290,28 +754,35 @@
         </span>
         <div>
           <div>Anton Bekker</div>
-          <div style="font-size:.75rem;color:var(--muted);font-weight:500">UI / Product / Visual Design</div>
+          <div style="font-size:.75rem;color:var(--muted);font-weight:500" data-i18n="brandRole">UI / Product / Visual Design</div>
         </div>
       </div>
-      <nav class="nav">
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-      </nav>
+
+      <div class="header-right">
+        <nav class="nav">
+          <a href="#projects" data-i18n="navProjects">Projects</a>
+          <a href="#contact" data-i18n="navContact">Contact</a>
+        </nav>
+
+        <div class="lang-switch" aria-label="Language switch">
+          <button class="lang-btn active" type="button" data-lang="en">EN</button>
+          <button class="lang-btn" type="button" data-lang="ru">RU</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main>
 
-    <!-- Hero -->
     <section class="hero">
       <article class="hero-main panel">
         <div>
-          <span class="eyebrow">Anton Bekker · Product & UI</span>
-          <h1>Digital products, games and decks I designed.</h1>
-          <p>I build interfaces, visual systems and presentations — from Web3 games and wallets to sports portals and exhibition graphics.</p>
+          <span class="eyebrow" data-i18n="eyebrow">Anton Bekker · Product & UI</span>
+          <h1 data-i18n="heroTitle">Digital products, games and decks <br> I designed.</h1>
+          <p data-i18n="heroText">I build interfaces, visual systems and presentations — from Web3 games and wallets to sports portals and exhibition graphics.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#projects">View selected work</a>
-            <a class="btn btn-secondary" id="contact" href="mailto:beantny@icloud.com">Contact</a>
+            <a class="btn btn-primary" href="#projects" data-i18n="heroPrimary">View selected work</a>
+            <a class="btn btn-secondary" id="contact" href="mailto:beantny@icloud.com" data-i18n="heroContact">Contact</a>
           </div>
         </div>
         <div class="tags">
@@ -322,37 +793,43 @@
           <span class="tag">Web3</span>
         </div>
       </article>
+
       <aside class="hero-aside panel">
         <div class="mini-card">
-          <div class="mini-label">Projects</div>
+          <div class="mini-label" data-i18n="miniProjects">Projects</div>
           <div class="metric">6</div>
         </div>
+
         <div class="mini-card">
-          <div class="mini-label">Focus</div>
-          <div style="font-size:.9rem;color:var(--muted);margin-top:4px">UI, Web3, Game UI, Visual Design, Presentations</div>
+          <div class="mini-label" data-i18n="miniFocus">Focus</div>
+          <div style="font-size:.9rem;color:var(--muted);margin-top:4px" data-i18n="miniFocusText">UI, Web3, Game UI, Visual Design, Presentations</div>
         </div>
+
         <div class="mini-card">
-          <div class="mini-label">Available for</div>
-          <div style="font-size:.9rem;color:var(--muted);margin-top:4px;margin-bottom:10px">UI/UX collaborations, product design, decks</div>
-          <a href="https://t.me/beantny" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:rgba(79,140,255,.14);border:1px solid rgba(79,140,255,.28);color:#cfe0ff;font-weight:700;font-size:.88rem;">Telegram: @beantny</a>
+          <div class="mini-label" data-i18n="miniAvailable">Available for</div>
+          <div style="font-size:.9rem;color:var(--muted);margin-top:4px;margin-bottom:10px" data-i18n="miniAvailableText">UI/UX collaborations, product design, decks</div>
+
+          <div class="socials">
+            <a class="social-chip" href="https://t.me/beantny" target="_blank" rel="noopener noreferrer">Telegram: @beantny</a>
+            <a class="social-chip" href="https://x.com/beeantny" target="_blank" rel="noopener noreferrer">X: @beeantny</a>
+            <a class="social-chip" href="https://farcaster.xyz/beantny" target="_blank" rel="noopener noreferrer">Farcaster: @beantny</a>
+          </div>
         </div>
       </aside>
     </section>
 
-    <!-- Projects -->
     <section id="projects">
       <div class="section-head">
         <div>
-          <h2>My Design Projects</h2>
-          <p>Scroll horizontally to browse all 6 projects.</p>
+          <h2 data-i18n="projectsTitle">My Design Projects</h2>
+          <p data-i18n="projectsText">Scroll horizontally to browse all 6 projects.</p>
         </div>
-        <span class="scroll-hint">← swipe / drag →</span>
+        <span class="scroll-hint" data-i18n="scrollHint">← swipe / drag →</span>
       </div>
 
       <div class="projects-track" id="projectsTrack">
 
-        <!-- Project 1: Dolia Pets -->
-        <article class="project-card panel">
+        <article class="project-card panel project-tone-pets">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project1-cover.jpg">
               <img src="./assets/project1-cover.jpg" alt="Dolia Pets main interface with 3D cat character" width="960" height="540" loading="eager">
@@ -361,29 +838,28 @@
               <div class="thumb" data-src="./assets/project1-1.jpg"><img src="./assets/project1-1.jpg" alt="Dolia Pets customization dashboard" width="512" height="512" loading="lazy"></div>
               <div class="thumb" data-src="./assets/project1-2.jpg"><img src="./assets/project1-2.jpg" alt="Dolia Pets NFT item detail" width="512" height="512" loading="lazy"></div>
               <div class="thumb" data-src="./assets/project1-3.jpg"><img src="./assets/project1-3.jpg" alt="Dolia Pets marketplace grid" width="512" height="512" loading="lazy"></div>
-              <div class="thumb" data-src="./assets/project4-4.jpg"><img src="./assets/project4-4.jpg" alt="Dolia Pets 3D cat detail view" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project1-4.jpg"><img src="./assets/project1-4.jpg" alt="Dolia Pets 3D cat detail view" width="512" height="512" loading="lazy"></div>
             </div>
           </div>
           <div class="project-body">
             <div>
               <div class="project-title">
-                <span class="pill">Project #1</span>
-                <h3>Dolia Pets</h3>
+                <span class="pill" data-i18n="p1pill">Project #1</span>
+                <h3 data-i18n="p1title">Dolia Pets</h3>
               </div>
-              <p>Web3 pet ecosystem: game UI, NFT marketplace, pet customization and tokenomics flows packed into one unified visual style.</p>
+              <p data-i18n="p1desc">Web3 pet ecosystem: game UI, NFT marketplace, pet customization and tokenomics flows packed into one unified visual style.</p>
             </div>
             <div class="meta-grid">
-              <div class="meta"><strong>Role</strong>UI/UX Designer, 3D Artist</div>
-              <div class="meta"><strong>Focus</strong>Game UI, marketplace, pet customization</div>
-              <div class="meta"><strong>Platform</strong>Web / AR / game ecosystem</div>
-              <div class="meta"><strong>Style</strong>Neon contrast, rounded, character-first</div>
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p1role">UI/UX Designer, 3D Artist</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p1focus">Game UI, marketplace, pet customization</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p1platform">Web / AR / game ecosystem</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p1style">Neon contrast, rounded, character-first</span></div>
             </div>
-            <div class="gallery-note">Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.</div>
+            <div class="gallery-note" data-i18n="p1note">Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.</div>
           </div>
         </article>
 
-        <!-- Project 2: Treasure Hunters -->
-        <article class="project-card panel">
+        <article class="project-card panel project-tone-treasure">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project2-cover.jpg">
               <img src="./assets/project2-cover.jpg" alt="Treasure Hunters world map with islands" width="960" height="540" loading="lazy">
@@ -398,23 +874,22 @@
           <div class="project-body">
             <div>
               <div class="project-title">
-                <span class="pill">Project #2</span>
-                <h3>Treasure Hunters</h3>
+                <span class="pill" data-i18n="p2pill">Project #2</span>
+                <h3 data-i18n="p2title">Treasure Hunters</h3>
               </div>
-              <p>Web3 digging game: shovels, staking, island map, on-chain swaps and referral rewards with a cartoon treasure-hunt aesthetic.</p>
+              <p data-i18n="p2desc">Web3 digging game: shovels, staking, island map, on-chain swaps and referral rewards with a cartoon treasure-hunt aesthetic.</p>
             </div>
             <div class="meta-grid">
-              <div class="meta"><strong>Role</strong>UI/UX Designer</div>
-              <div class="meta"><strong>Focus</strong>Game HUD, staking, earning flows</div>
-              <div class="meta"><strong>Platform</strong>Web game with Web3</div>
-              <div class="meta"><strong>Style</strong>Warm sand tones, chunky controls</div>
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p2role">UI/UX Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p2focus">Game HUD, staking, earning flows</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p2platform">Web game with Web3</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p2style">Warm sand tones, chunky controls</span></div>
             </div>
-            <div class="gallery-note">Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.</div>
+            <div class="gallery-note" data-i18n="p2note">Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.</div>
           </div>
         </article>
 
-        <!-- Project 3: Crypto Wallet -->
-        <article class="project-card panel">
+        <article class="project-card panel project-tone-wallet">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project3-cover.jpg">
               <img src="./assets/project3-cover.jpg" alt="Crypto wallet balance screen in Telegram-style dark UI" width="960" height="540" loading="lazy">
@@ -429,26 +904,25 @@
           <div class="project-body">
             <div>
               <div class="project-title">
-                <span class="pill">Project #3</span>
-                <h3>Crypto Wallet</h3>
+                <span class="pill" data-i18n="p3pill">Project #3</span>
+                <h3 data-i18n="p3title">Crypto Wallet</h3>
               </div>
-              <p>Telegram crypto wallet concept for fast P2P exchange, gift transfers and simple portfolio view inside a messenger-native interface.</p>
+              <p data-i18n="p3desc">Telegram crypto wallet concept for fast P2P exchange, gift transfers and simple portfolio view inside a messenger-native interface.</p>
             </div>
             <div class="meta-grid">
-              <div class="meta"><strong>Role</strong>UI/UX Designer</div>
-              <div class="meta"><strong>Focus</strong>P2P flows, gifting, portfolio</div>
-              <div class="meta"><strong>Platform</strong>Telegram mini app</div>
-              <div class="meta"><strong>Style</strong>Dark trading UI, compact cards</div>
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p3role">UI/UX Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p3focus">P2P flows, gifting, portfolio</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p3platform">Telegram mini app</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p3style">Dark trading UI, compact cards</span></div>
             </div>
-            <div class="gallery-note">Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.</div>
+            <div class="gallery-note" data-i18n="p3note">Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.</div>
           </div>
         </article>
 
-        <!-- Project 4: Swap App -->
-        <article class="project-card panel">
+        <article class="project-card panel project-tone-swap">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project4-cover.jpg">
-              <img src="./assets/project4-cover.jpg" alt="Swap app main concept screen" width="960" height="540" loading="lazy">
+              <img src="./assets/project4-cover.jpg" alt="Swap app concept preview" width="960" height="540" loading="lazy">
             </div>
             <div class="thumbs">
               <div class="thumb" data-src="./assets/project4-1.jpg"><img src="./assets/project4-1.jpg" alt="Swap app flow screen" width="512" height="512" loading="lazy"></div>
@@ -460,23 +934,22 @@
           <div class="project-body">
             <div>
               <div class="project-title">
-                <span class="pill">Project #4</span>
-                <h3>Swap App</h3>
+                <span class="pill" data-i18n="p4pill">Project #4</span>
+                <h3 data-i18n="p4title">Swap App</h3>
               </div>
-              <p>Personal swap app concept with AI matching, per-item chats and playful search modes (bigger, random, smaller).</p>
+              <p data-i18n="p4desc">Personal swap app concept with AI matching, per-item chats and playful search modes (bigger, random, smaller).</p>
             </div>
             <div class="meta-grid">
-              <div class="meta"><strong>Role</strong>UI/UX Designer — personal concept</div>
-              <div class="meta"><strong>Focus</strong>AI matching, item cards, chat</div>
-              <div class="meta"><strong>Platform</strong>Mobile app (iOS-first)</div>
-              <div class="meta"><strong>Style</strong>Clean white cards, bold type</div>
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p4role">UI/UX Designer — personal concept</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p4focus">AI matching, item cards, chat</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p4platform">Mobile app (iOS-first)</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p4style">Clean white cards, bold type</span></div>
             </div>
-            <div class="gallery-note">Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.</div>
+            <div class="gallery-note" data-i18n="p4note">Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.</div>
           </div>
         </article>
 
-        <!-- Project 5: Snowboard Federation Portal -->
-        <article class="project-card panel">
+        <article class="project-card panel project-tone-snow">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project5-cover.jpg">
               <img src="./assets/project5-cover.jpg" alt="Snowboard federation portal calendar screen" width="960" height="540" loading="lazy">
@@ -491,23 +964,22 @@
           <div class="project-body">
             <div>
               <div class="project-title">
-                <span class="pill">Project #5</span>
-                <h3>Snowboard Federation Portal</h3>
+                <span class="pill" data-i18n="p5pill">Project #5</span>
+                <h3 data-i18n="p5title">Snowboard Portal</h3>
               </div>
-              <p>Concept web portal for the Saint Petersburg Snowboard Federation — tournaments, training and event calendar in one athlete-friendly UI.</p>
+              <p data-i18n="p5desc">Concept web portal for the Saint Petersburg Snowboard Federation — tournaments, training and event calendar in one athlete-friendly UI.</p>
             </div>
             <div class="meta-grid">
-              <div class="meta"><strong>Role</strong>UI/UX Designer</div>
-              <div class="meta"><strong>Focus</strong>Sports portal, calendar, events</div>
-              <div class="meta"><strong>Platform</strong>Web portal concept</div>
-              <div class="meta"><strong>Style</strong>Bright winter cards, accessible dashboards</div>
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p5role">UI/UX Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p5focus">Sports portal, calendar, events</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p5platform">Web portal concept</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p5style">Bright winter cards, accessible dashboards</span></div>
             </div>
-            <div class="gallery-note">Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.</div>
+            <div class="gallery-note" data-i18n="p5note">Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.</div>
           </div>
         </article>
 
-        <!-- Project 6: Graphic & Presentation Design -->
-        <article class="project-card panel">
+        <article class="project-card panel project-tone-graphic">
           <div class="project-visual">
             <div class="project-cover" data-src="./assets/project6-cover.jpg">
               <img src="./assets/project6-cover.jpg" alt="Graphic and presentation design main board" width="960" height="540" loading="lazy">
@@ -522,69 +994,299 @@
           <div class="project-body">
             <div>
               <div class="project-title">
-                <span class="pill">Project #6</span>
-                <h3>Graphic & Presentation Design</h3>
+                <span class="pill" data-i18n="p6pill">Project #6</span>
+                <h3 data-i18n="p6title">Presentation & Graphic</h3>
               </div>
-              <p>Exhibition signage for the State Hermitage Museum and a strategy deck for the Saint Petersburg Snowboard Federation.</p>
+              <p data-i18n="p6desc">Exhibition signage for the State Hermitage Museum and a strategy deck for the Saint Petersburg Snowboard Federation.</p>
             </div>
             <div class="meta-grid">
-              <div class="meta"><strong>Role</strong>Graphic Designer, Presentation Designer</div>
-              <div class="meta"><strong>Focus</strong>Exhibition branding, data storytelling</div>
-              <div class="meta"><strong>Platform</strong>Large-scale print, digital slides</div>
-              <div class="meta"><strong>Style</strong>Strong type hierarchy, high-contrast palettes</div>
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p6role">Graphic Designer, Presentation Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p6focus">Exhibition branding, data storytelling</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p6platform">Large-scale print, digital slides</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p6style">Strong type hierarchy, high-contrast palettes</span></div>
             </div>
-            <div class="gallery-note">Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation.</div>
+            <div class="gallery-note" data-i18n="p6note">Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation.</div>
           </div>
         </article>
 
-      </div><!-- /projects-track -->
+      </div>
     </section>
 
-    <footer class="footer" id="contact">
+    <footer class="footer" id="contact-footer" data-i18n="footerText">
       Anton Bekker — UI / Product / Visual Design
     </footer>
   </main>
 </div>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close"><span>×</span></button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image"><span>&larr;</span></button>
   <img class="lightbox-img" id="lightboxImg" src="" alt="Project image enlarged">
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image"><span>&rarr;</span></button>
 </div>
 
 <script>
-  // Horizontal drag scroll
   const track = document.getElementById('projectsTrack');
-  let isDragging = false, startX, scrollLeft;
-  track.addEventListener('mousedown', e => {
-    isDragging = true;
-    startX = e.pageX - track.offsetLeft;
-    scrollLeft = track.scrollLeft;
-    track.style.userSelect = 'none';
-  });
-  document.addEventListener('mouseup', () => { isDragging = false; track.style.userSelect = ''; });
-  document.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - track.offsetLeft;
-    track.scrollLeft = scrollLeft - (x - startX);
+
+  let isPointerDown = false;
+  let startX = 0;
+  let startScrollLeft = 0;
+  let hasDragged = false;
+
+  track.addEventListener('pointerdown', e => {
+    isPointerDown = true;
+    hasDragged = false;
+    startX = e.clientX;
+    startScrollLeft = track.scrollLeft;
+    track.classList.add('dragging');
   });
 
-  // Lightbox
+  window.addEventListener('pointermove', e => {
+    if (!isPointerDown) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 6) hasDragged = true;
+    track.scrollLeft = startScrollLeft - dx;
+  });
+
+  function stopDragging() {
+    isPointerDown = false;
+    track.classList.remove('dragging');
+    requestAnimationFrame(() => {
+      hasDragged = false;
+    });
+  }
+
+  window.addEventListener('pointerup', stopDragging);
+  window.addEventListener('pointercancel', stopDragging);
+
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
   const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
 
-  document.querySelectorAll('.project-cover, .thumb').forEach(el => {
-    el.addEventListener('click', () => {
-      const src = el.dataset.src || el.querySelector('img').src;
-      lightboxImg.src = src;
-      lightbox.classList.add('open');
+  let currentGallery = [];
+  let currentIndex = 0;
+
+  function openLightbox(gallery, index) {
+    currentGallery = gallery;
+    currentIndex = index;
+    lightboxImg.src = currentGallery[currentIndex];
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+  }
+
+  function showPrev() {
+    if (!currentGallery.length) return;
+    currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+    lightboxImg.src = currentGallery[currentIndex];
+  }
+
+  function showNext() {
+    if (!currentGallery.length) return;
+    currentIndex = (currentIndex + 1) % currentGallery.length;
+    lightboxImg.src = currentGallery[currentIndex];
+  }
+
+  document.querySelectorAll('.project-card').forEach(card => {
+    const galleryItems = Array.from(card.querySelectorAll('.project-cover, .thumb'));
+    const gallery = galleryItems.map(el => el.dataset.src || el.querySelector('img').src);
+
+    galleryItems.forEach((el, index) => {
+      el.addEventListener('click', e => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        openLightbox(gallery, index);
+      });
     });
   });
-  lightboxClose.addEventListener('click', () => lightbox.classList.remove('open'));
-  lightbox.addEventListener('click', e => { if (e.target === lightbox || e.target === lightboxImg) lightbox.classList.remove('open'); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', showPrev);
+  lightboxNext.addEventListener('click', showNext);
+
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showPrev();
+    if (e.key === 'ArrowRight') showNext();
+  });
+
+  const translations = {
+    en: {
+      brandRole: "UI / Product / Visual Design",
+      navProjects: "Projects",
+      navContact: "Contact",
+      eyebrow: "Anton Bekker · Product & UI",
+      heroTitle: "Digital products, games and decks <br> I designed.",
+      heroText: "I build interfaces, visual systems and presentations — from Web3 games and wallets to sports portals and exhibition graphics.",
+      heroPrimary: "View selected work",
+      heroContact: "Contact",
+      miniProjects: "Projects",
+      miniFocus: "Focus",
+      miniFocusText: "UI, Web3, Game UI, Visual Design, Presentations",
+      miniAvailable: "Available for",
+      miniAvailableText: "UI/UX collaborations, product design, decks",
+      projectsTitle: "My Design Projects",
+      projectsText: "Scroll horizontally to browse all 6 projects.",
+      scrollHint: "← swipe / drag →",
+      footerText: "Anton Bekker — UI / Product / Visual Design",
+      roleLabel: "Role",
+      focusLabel: "Focus",
+      platformLabel: "Platform",
+      styleLabel: "Style",
+      p1pill: "Project #1",
+      p1title: "Dolia Pets",
+      p1desc: "Web3 pet ecosystem: game UI, NFT marketplace, pet customization and tokenomics flows packed into one unified visual style.",
+      p1role: "UI/UX Designer, 3D Artist",
+      p1focus: "Game UI, marketplace, pet customization",
+      p1platform: "Web / AR / game ecosystem",
+      p1style: "Neon contrast, rounded, character-first",
+      p1note: "Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.",
+      p2pill: "Project #2",
+      p2title: "Treasure Hunters",
+      p2desc: "Web3 digging game: shovels, staking, island map, on-chain swaps and referral rewards with a cartoon treasure-hunt aesthetic.",
+      p2role: "UI/UX Designer",
+      p2focus: "Game HUD, staking, earning flows",
+      p2platform: "Web game with Web3",
+      p2style: "Warm sand tones, chunky controls",
+      p2note: "Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.",
+      p3pill: "Project #3",
+      p3title: "Crypto Wallet",
+      p3desc: "Telegram crypto wallet concept for fast P2P exchange, gift transfers and simple portfolio view inside a messenger-native interface.",
+      p3role: "UI/UX Designer",
+      p3focus: "P2P flows, gifting, portfolio",
+      p3platform: "Telegram mini app",
+      p3style: "Dark trading UI, compact cards",
+      p3note: "Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.",
+      p4pill: "Project #4",
+      p4title: "Swap App",
+      p4desc: "Personal swap app concept with AI matching, per-item chats and playful search modes (bigger, random, smaller).",
+      p4role: "UI/UX Designer — personal concept",
+      p4focus: "AI matching, item cards, chat",
+      p4platform: "Mobile app (iOS-first)",
+      p4style: "Clean white cards, bold type",
+      p4note: "Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.",
+      p5pill: "Project #5",
+      p5title: "Snowboard Portal",
+      p5desc: "Concept web portal for the Saint Petersburg Snowboard Federation — tournaments, training and event calendar in one athlete-friendly UI.",
+      p5role: "UI/UX Designer",
+      p5focus: "Sports portal, calendar, events",
+      p5platform: "Web portal concept",
+      p5style: "Bright winter cards, accessible dashboards",
+      p5note: "Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.",
+      p6pill: "Project #6",
+      p6title: "Presentation & Graphic",
+      p6desc: "Exhibition signage for the State Hermitage Museum and a strategy deck for the Saint Petersburg Snowboard Federation.",
+      p6role: "Graphic Designer, Presentation Designer",
+      p6focus: "Exhibition branding, data storytelling",
+      p6platform: "Large-scale print, digital slides",
+      p6style: "Strong type hierarchy, high-contrast palettes",
+      p6note: "Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation."
+    },
+    ru: {
+      brandRole: "UI / Product / Visual Design",
+      navProjects: "Проекты",
+      navContact: "Контакты",
+      eyebrow: "Anton Bekker · Product & UI",
+      heroTitle: "Цифровые продукты, игровые интерфейсы <br>и презентации, которые я спроектировал.",
+      heroText: "Создаю интерфейсы, визуальные системы и презентации — от Web3-игр и криптокошельков до спортивных порталов и выставочной графики.",
+      heroPrimary: "Смотреть проекты",
+      heroContact: "Связаться",
+      miniProjects: "Проекты",
+      miniFocus: "Фокус",
+      miniFocusText: "UI, Web3, Game UI, визуальный дизайн, презентации",
+      miniAvailable: "Открыт к сотрудничеству",
+      miniAvailableText: "UI/UX, product design, презентации и визуальные системы",
+      projectsTitle: "Мои дизайн-проекты",
+      projectsText: "Листай горизонтально, чтобы посмотреть все 6 проектов.",
+      scrollHint: "← свайп / drag →",
+      footerText: "Anton Bekker — UI / Product / Visual Design",
+      roleLabel: "Роль",
+      focusLabel: "Фокус",
+      platformLabel: "Платформа",
+      styleLabel: "Стиль",
+      p1pill: "Проект #1",
+      p1title: "Dolia Pets",
+      p1desc: "Web3-экосистема виртуальных питомцев: game UI, NFT marketplace, кастомизация персонажа и tokenomics flows в едином визуальном стиле.",
+      p1role: "UI/UX Designer, 3D Artist",
+      p1focus: "Game UI, marketplace, pet customization",
+      p1platform: "Web / AR / game ecosystem",
+      p1style: "Neon contrast, rounded, character-first",
+      p1note: "Уход за виртуальным питомцем, мини-игры, коллекционные скины и NFT-логика собраны в одно цельное продуктовое направление.",
+      p2pill: "Проект #2",
+      p2title: "Treasure Hunters",
+      p2desc: "Web3-игра про раскопки: shovel system, staking, карта островов, on-chain swap и referral rewards в мультяшной treasure-hunt эстетике.",
+      p2role: "UI/UX Designer",
+      p2focus: "Game HUD, staking, earning flows",
+      p2platform: "Web game with Web3",
+      p2style: "Warm sand tones, chunky controls",
+      p2note: "Панели свапа и стейкинга, реферальные механики и игровые диалоги помогают показать on-chain действия без потери лёгкого игрового настроения.",
+      p3pill: "Проект #3",
+      p3title: "Crypto Wallet",
+      p3desc: "Концепт Telegram-кошелька для быстрых P2P-обменов, подарочных переводов и простого обзора портфеля внутри messenger-native интерфейса.",
+      p3role: "UI/UX Designer",
+      p3focus: "P2P flows, gifting, portfolio",
+      p3platform: "Telegram mini app",
+      p3style: "Dark trading UI, compact cards",
+      p3note: "Полный Figma-flow для wallet, P2P, истории, referral и настроек, чтобы весь опыт внутри бота ощущался цельным.",
+      p4pill: "Проект #4",
+      p4title: "Swap App",
+      p4desc: "Личный концепт swap-приложения с AI matching, чатами по каждому предмету и игровыми режимами поиска: bigger, random, smaller.",
+      p4role: "UI/UX Designer — personal concept",
+      p4focus: "AI matching, item cards, chat",
+      p4platform: "Mobile app (iOS-first)",
+      p4style: "Clean white cards, bold type",
+      p4note: "Исследование того, как AI может сделать обмен без денег таким же плавным, как современный e-commerce, но сохранить азарт случайного свапа.",
+      p5pill: "Проект #5",
+      p5title: "Snowboard Portal",
+      p5desc: "Концепт веб-портала для Федерации сноуборда Санкт-Петербурга — турниры, тренировки и календарь событий в удобном athlete-friendly UI.",
+      p5role: "UI/UX Designer",
+      p5focus: "Sports portal, calendar, events",
+      p5platform: "Web portal concept",
+      p5style: "Bright winter cards, accessible dashboards",
+      p5note: "Показывает, как региональный спортивный портал может выглядеть современно и дружелюбно, объединяя календарь, соревнования и onboarding в одной UI-системе.",
+      p6pill: "Проект #6",
+      p6title: "Presentation & Graphic",
+      p6desc: "Выставочная графика для Государственного Эрмитажа и стратегическая презентация для Федерации сноуборда Санкт-Петербурга.",
+      p6role: "Graphic Designer, Presentation Designer",
+      p6focus: "Exhibition branding, data storytelling",
+      p6platform: "Large-scale print, digital slides",
+      p6style: "Strong type hierarchy, high-contrast palettes",
+      p6note: "Абстрактные идеи превращены в визуальные системы — от музейной навигации до стратегических презентаций для спортивной федерации."
+    }
+  };
+
+  function setLanguage(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (translations[lang] && translations[lang][key]) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setLanguage(btn.dataset.lang);
+    });
+  });
+
+  setLanguage('en');
 </script>
 </body>
 </html>
