@@ -488,7 +488,6 @@
         radial-gradient(700px 280px at 0% 0%, rgba(196, 92, 255, .20), transparent 48%),
         linear-gradient(180deg, rgba(120, 46, 180, .07), rgba(0,0,0,0));
     }
-
     .project-tone-pets {
       border-color: rgba(196, 92, 255, .20);
       box-shadow: 0 8px 32px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.02);
@@ -499,7 +498,6 @@
         radial-gradient(700px 280px at 0% 0%, rgba(244, 201, 93, .16), transparent 48%),
         linear-gradient(180deg, rgba(180, 120, 20, .05), rgba(0,0,0,0));
     }
-
     .project-tone-treasure { border-color: rgba(244, 201, 93, .16); }
 
     .project-tone-wallet::before {
@@ -507,7 +505,6 @@
         radial-gradient(700px 280px at 0% 0%, rgba(79, 140, 255, .16), transparent 48%),
         linear-gradient(180deg, rgba(52, 108, 255, .05), rgba(0,0,0,0));
     }
-
     .project-tone-wallet { border-color: rgba(79, 140, 255, .18); }
 
     .project-tone-swap::before {
@@ -515,7 +512,6 @@
         radial-gradient(700px 280px at 0% 0%, rgba(130, 210, 255, .12), transparent 48%),
         linear-gradient(180deg, rgba(255,255,255,.035), rgba(0,0,0,0));
     }
-
     .project-tone-swap { border-color: rgba(130, 210, 255, .14); }
 
     .project-tone-snow::before {
@@ -523,7 +519,6 @@
         radial-gradient(700px 280px at 0% 0%, rgba(163, 220, 255, .16), transparent 48%),
         linear-gradient(180deg, rgba(120, 180, 255, .05), rgba(0,0,0,0));
     }
-
     .project-tone-snow { border-color: rgba(163, 220, 255, .16); }
 
     .project-tone-graphic::before {
@@ -531,7 +526,6 @@
         radial-gradient(700px 280px at 0% 0%, rgba(82, 188, 146, .18), transparent 48%),
         linear-gradient(180deg, rgba(24, 92, 72, .06), rgba(0,0,0,0));
     }
-
     .project-tone-graphic { border-color: rgba(82, 188, 146, .18); }
 
     .project-visual {
@@ -887,10 +881,7 @@
       .hero-aside { display: none; }
 
       .mobile-contact-panel { display: block; }
-
-      .mobile-contact-panel .mini-card:last-child {
-        min-height: auto;
-      }
+      .mobile-contact-panel .mini-card:last-child { min-height: auto; }
 
       .socials-mobile,
       .socials-mobile .social-chip {
@@ -908,7 +899,7 @@
       .projects-track {
         display: flex;
         flex-direction: column;
-        gap: 24px;
+        gap: 18px;
         overflow: visible;
         padding-top: 0;
         margin-top: 0;
@@ -920,7 +911,7 @@
         overscroll-behavior-x: none;
         overscroll-behavior-y: contain;
         scroll-snap-type: none;
-        perspective: 1200px;
+        perspective: 1400px;
       }
 
       .projects-track.dragging {
@@ -936,46 +927,33 @@
         padding: 14px;
         opacity: 1;
         transform: translate3d(0,0,0) scale(1);
-        transform-origin: 50% 38%;
+        transform-origin: 50% 40%;
         transform-style: preserve-3d;
         will-change: transform, opacity, filter;
         transition:
-          transform .18s linear,
-          opacity .18s linear,
-          filter .18s linear,
-          box-shadow .24s ease;
+          transform .22s linear,
+          opacity .22s linear,
+          filter .22s linear,
+          box-shadow .28s ease;
       }
 
       .project-card.mobile-enter {
         opacity: 0;
-        transform: translate3d(24px, 28px, -120px) rotateX(6deg) scale(.94);
+        transform: translate3d(0, 40px, -80px) scale(.96);
         filter: blur(8px);
       }
 
       .project-card.mobile-visible {
         opacity: 1;
-        transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
         filter: blur(0);
-        transition:
-          transform .75s cubic-bezier(.16,1,.3,1),
-          opacity .75s cubic-bezier(.16,1,.3,1),
-          filter .75s cubic-bezier(.16,1,.3,1),
-          box-shadow .32s ease;
       }
 
       .project-card.mobile-active {
         box-shadow:
-          0 26px 70px rgba(0,0,0,.46),
+          0 28px 80px rgba(0,0,0,.48),
           0 0 0 1px rgba(255,255,255,.04),
           inset 0 1px 0 rgba(255,255,255,.02);
-      }
-
-      .project-card.mobile-next-hint {
-        opacity: .9;
-      }
-
-      .project-card.mobile-exit {
-        pointer-events: none;
       }
 
       .project-visual { gap: 10px; }
@@ -1384,7 +1362,7 @@
   document.getElementById('lightboxNext').addEventListener('click', showNext);
 
   lightbox.addEventListener('click', e => {
-        if (e.target === lightbox) closeLightbox();
+    if (e.target === lightbox) closeLightbox();
   });
 
   document.addEventListener('keydown', e => {
@@ -1401,16 +1379,12 @@
 
   function clearMobileStates() {
     document.querySelectorAll('.project-card').forEach(card => {
-      card.classList.remove(
-        'mobile-enter',
-        'mobile-visible',
-        'mobile-active',
-        'mobile-next-hint',
-        'mobile-exit'
-      );
+      card.classList.remove('mobile-enter', 'mobile-visible', 'mobile-active');
       card.style.transform = '';
       card.style.opacity = '';
       card.style.filter = '';
+      card.style.zIndex = '';
+      card.style.pointerEvents = '';
     });
 
     if (mobileObserver) {
@@ -1468,7 +1442,7 @@
 
       cards.forEach((card, index) => {
         const rect = card.getBoundingClientRect();
-        const anchor = vh * 0.18;
+        const anchor = vh * 0.22;
         const distance = Math.abs(rect.top - anchor);
 
         if (distance < bestDistance) {
@@ -1480,73 +1454,80 @@
       cards.forEach((card, index) => {
         if (!card.classList.contains('mobile-visible')) return;
 
-        card.classList.remove('mobile-active', 'mobile-next-hint', 'mobile-exit');
+        card.classList.remove('mobile-active');
+        card.style.pointerEvents = 'auto';
 
         const rect = card.getBoundingClientRect();
 
-        const exitStart = vh * 0.92;
-        const exitEnd = vh * 0.34;
-        const rawLate = (exitStart - rect.bottom) / (exitStart - exitEnd);
-        const lateProgress = Math.max(0, Math.min(1, rawLate));
-
         if (index < activeIndex) {
-          const exitScale = 1.04 + lateProgress * 0.16;
-          const exitY = -lateProgress * 42;
-          const exitZ = lateProgress * 210;
-          const exitRotate = -lateProgress * 7;
-          const exitOpacity = 1 - lateProgress * 0.94;
-          const exitBlur = lateProgress * 14;
+          const start = vh * 0.92;
+          const end = vh * 0.30;
+          const raw = (start - rect.bottom) / (start - end);
+          const progress = Math.max(0, Math.min(1, raw));
 
-          card.classList.add('mobile-exit');
-          card.style.transform =
-            `translate3d(0, ${exitY}px, ${exitZ}px) rotateX(${exitRotate}deg) scale(${exitScale})`;
-          card.style.opacity = String(Math.max(.05, exitOpacity));
-          card.style.filter = `blur(${exitBlur}px)`;
+          const scale = 1 + progress * 0.08;
+          const y = -progress * 28;
+          const z = 90 + progress * 80;
+          const opacity = 0.22 - progress * 0.16;
+          const blur = 10 + progress * 6;
+
+          card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
+          card.style.opacity = String(Math.max(0.04, opacity));
+          card.style.filter = `blur(${blur}px)`;
+          card.style.zIndex = '1';
+          card.style.pointerEvents = 'none';
           return;
         }
 
         if (index === activeIndex) {
+          const start = vh * 0.92;
+          const end = vh * 0.28;
+          const raw = (start - rect.bottom) / (start - end);
+          const progress = Math.max(0, Math.min(1, raw));
+
+          const scale = 1 + progress * 0.055;
+          const y = -progress * 12;
+          const z = progress * 24;
+          const opacity = 1 - progress * 0.08;
+          const blur = progress * 1.6;
+
           card.classList.add('mobile-active');
-
-          const scale = 1 + lateProgress * 0.14;
-          const y = -lateProgress * 16;
-          const z = lateProgress * 135;
-          const rotate = -lateProgress * 4;
-          const blur = lateProgress * 2.4;
-          const opacity = 1 - lateProgress * 0.10;
-
-          card.style.transform =
-            `translate3d(0, ${y}px, ${z}px) rotateX(${rotate}deg) scale(${scale})`;
+          card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
           card.style.opacity = String(opacity);
           card.style.filter = `blur(${blur}px)`;
+          card.style.zIndex = '5';
           return;
         }
 
         if (index === activeIndex + 1) {
-          card.classList.add('mobile-next-hint');
-
           const prevRect = cards[activeIndex].getBoundingClientRect();
-          const takeoverRaw = (vh * 0.88 - prevRect.bottom) / (vh * 0.54);
-          const takeover = Math.max(0, Math.min(1, takeoverRaw));
+          const raw = (vh * 0.94 - prevRect.bottom) / (vh * 0.60);
+          const reveal = Math.max(0, Math.min(1, raw));
 
-          const x = 24 - takeover * 24;
-          const y = 36 - takeover * 36;
-          const z = -170 + takeover * 170;
-          const scale = 0.91 + takeover * 0.09;
-          const rotate = 8 - takeover * 8;
-          const opacity = 0.32 + takeover * 0.68;
-          const blur = 12 - takeover * 12;
+          const y = 58 - reveal * 58;
+          const z = -150 + reveal * 150;
+          const scale = 0.92 + reveal * 0.08;
+          const opacity = 0.34 + reveal * 0.66;
+          const blur = 12 - reveal * 12;
 
-          card.style.transform =
-            `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotate}deg) scale(${scale})`;
+          card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
           card.style.opacity = String(opacity);
           card.style.filter = `blur(${blur}px)`;
+          card.style.zIndex = '4';
           return;
         }
 
-        card.style.transform = 'translate3d(0, 56px, -220px) rotateX(10deg) scale(.9)';
-        card.style.opacity = '.16';
-        card.style.filter = 'blur(12px)';
+        const depth = Math.min(index - activeIndex - 1, 3);
+        const y = 66 + depth * 18;
+        const z = -180 - depth * 70;
+        const scale = 0.9 - depth * 0.03;
+        const opacity = Math.max(0.08, 0.18 - depth * 0.03);
+        const blur = 12 + depth * 2;
+
+        card.style.transform = `translate3d(0, ${y}px, ${z}px) scale(${scale})`;
+        card.style.opacity = String(opacity);
+        card.style.filter = `blur(${blur}px)`;
+        card.style.zIndex = String(3 - depth);
       });
     };
 
@@ -1575,6 +1556,8 @@
         card.style.transform = '';
         card.style.opacity = '';
         card.style.filter = '';
+        card.style.zIndex = '';
+        card.style.pointerEvents = '';
       });
     }
   }
