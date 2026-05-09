@@ -1473,93 +1473,45 @@
 
   function clearMobileStates() {
     document.querySelectorAll('.project-card').forEach(card => {
-      card.classList.remove('mobile-visible', 'mobile-active', 'mobile-reveal-soft');
+      card.classList.remove('mobile-visible');
       card.style.transform = '';
       card.style.opacity = '';
+      card.style.filter = '';
     });
-
-    if (mobileObserver) {
-      mobileObserver.disconnect();
-      mobileObserver = null;
-    }
-
-    if (mobileScrollHandler) {
-      const track = document.getElementById('projectsTrack');
-      track && track.removeEventListener('scroll', mobileScrollHandler);
-      mobileScrollHandler = null;
-    }
-
-    if (mobileResizeHandler) {
-      window.removeEventListener('resize', mobileResizeHandler);
-      mobileResizeHandler = null;
-    }
-
-    if (mobileRaf) {
-      cancelAnimationFrame(mobileRaf);
-      mobileRaf = null;
-    }
   }
 
   function setupMobileProjectFlow() {
-    const track = document.getElementById('projectsTrack');
-    const stages = [...document.querySelectorAll('.project-stage')];
     const cards = [...document.querySelectorAll('.project-card')];
-    if (!track || !cards.length || !stages.length) return;
+    if (!cards.length) return;
 
-    cards.forEach(card => card.classList.add('mobile-visible'));
-
-    const updateActiveCard = () => {
-      const trackRect = track.getBoundingClientRect();
-      const center = trackRect.left + trackRect.width / 2;
-      let activeIndex = 0;
-      let best = Infinity;
-
-      stages.forEach((stage, index) => {
-        const rect = stage.getBoundingClientRect();
-        const stageCenter = rect.left + rect.width / 2;
-        const dist = Math.abs(stageCenter - center);
-        if (dist < best) {
-          best = dist;
-          activeIndex = index;
-        }
-      });
-
-      cards.forEach((card, index) => {
-        card.classList.remove('mobile-active', 'mobile-reveal-soft');
-        if (index === activeIndex) {
-          card.classList.add('mobile-active');
-        } else {
-          card.classList.add('mobile-reveal-soft');
-        }
+    const revealCards = () => {
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const visibleX = rect.left < window.innerWidth - 40 && rect.right > 40;
+        if (visibleX) card.classList.add('mobile-visible');
       });
     };
 
     mobileScrollHandler = () => {
       if (mobileRaf) cancelAnimationFrame(mobileRaf);
-      mobileRaf = requestAnimationFrame(updateActiveCard);
+      mobileRaf = requestAnimationFrame(revealCards);
     };
 
     mobileResizeHandler = () => {
       if (mobileRaf) cancelAnimationFrame(mobileRaf);
-      mobileRaf = requestAnimationFrame(updateActiveCard);
+      mobileRaf = requestAnimationFrame(revealCards);
     };
 
-    track.addEventListener('scroll', mobileScrollHandler, { passive: true });
+    const track = document.getElementById('projectsTrack');
+    if (track) track.addEventListener('scroll', mobileScrollHandler, { passive: true });
     window.addEventListener('resize', mobileResizeHandler);
-    updateActiveCard();
+    revealCards();
   }
 
   function handleResponsiveMode() {
     clearMobileStates();
-
     if (window.matchMedia('(max-width:760px)').matches) {
       setupMobileProjectFlow();
-    } else {
-      document.querySelectorAll('.project-card').forEach(card => {
-        card.classList.remove('mobile-visible', 'mobile-active', 'mobile-reveal-soft');
-        card.style.transform = '';
-        card.style.opacity = '';
-      });
     }
   }
 
