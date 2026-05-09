@@ -36,7 +36,6 @@
       --display: 'Clash Display', 'Satoshi', system-ui, sans-serif;
       --display-ru: 'Unbounded', 'Satoshi', sans-serif;
       --ease: 200ms cubic-bezier(.16,1,.3,1);
-      --mobile-projects-sticky-top: 84px;
     }
 
     *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -319,6 +318,35 @@
       box-shadow: 0 0 28px rgba(79,140,255,.14);
     }
 
+    .mobile-contact-panel {
+      display: none;
+      margin-top: 16px;
+      padding: 14px;
+    }
+
+    .mobile-contact-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mobile-contact-text {
+      font-size: .98rem;
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 22ch;
+    }
+
+    .socials-mobile {
+      display: grid;
+      gap: 10px;
+      margin-top: 0;
+    }
+
+    .socials-mobile .social-chip {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
     .section-head {
       display: flex;
       align-items: flex-end;
@@ -344,14 +372,6 @@
       white-space: nowrap;
     }
 
-    .projects-pin-wrap {
-      position: relative;
-    }
-
-    .projects-pin {
-      position: static;
-    }
-
     .projects-track {
       display: flex;
       flex-direction: row;
@@ -368,9 +388,7 @@
       -webkit-user-select: none;
       touch-action: pan-y;
       overscroll-behavior-x: contain;
-      scroll-behavior: smooth;
       will-change: transform;
-      transform: translate3d(0,0,0);
     }
 
     .projects-track.dragging {
@@ -404,22 +422,12 @@
       inset: 0;
       border-radius: inherit;
       pointer-events: none;
-      opacity: .92;
       z-index: 0;
+      opacity: .92;
     }
 
-    .project-card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .project-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .project-card:hover::before {
-      opacity: 1;
-    }
+    .project-card > * { position: relative; z-index: 1; }
+    .project-card:hover { transform: translateY(-2px); }
 
     .project-tone-pets::before {
       background:
@@ -793,41 +801,54 @@
         transform-origin: right center;
       }
 
-      .projects-pin-wrap {
-        position: relative;
-        overflow: clip;
+      .hero-aside {
+        display: none;
       }
 
-      .projects-pin {
-        position: sticky;
-        top: var(--mobile-projects-sticky-top);
+      .mobile-contact-panel {
+        display: block;
+      }
+
+      .scroll-hint {
+        display: none;
       }
 
       .projects-track {
-        gap: 12px;
-        overflow: hidden;
-        padding-top: 6px;
-        padding-bottom: 6px;
-        margin-top: -6px;
-        cursor: auto;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: pan-y;
+        flex-direction: column;
+        overflow-x: visible;
+        overflow-y: visible;
         scroll-snap-type: none;
+        cursor: auto;
+        user-select: auto;
+        -webkit-user-select: auto;
+        touch-action: auto;
+        gap: 20px;
+        padding-bottom: 0;
       }
 
       .projects-track.dragging {
         cursor: auto;
-        scroll-snap-type: none;
       }
 
       .project-card {
-        flex: 0 0 calc(100vw - 28px);
+        flex: none;
+        width: 100%;
         grid-template-columns: 1fr;
+        opacity: 0;
+        transform: translateX(56px);
+        transition:
+          opacity .55s cubic-bezier(.16,1,.3,1),
+          transform .55s cubic-bezier(.16,1,.3,1);
+        will-change: opacity, transform;
+      }
+
+      .project-card.card-visible {
+        opacity: 1;
+        transform: translateX(0);
       }
 
       .thumbs { grid-template-columns: repeat(4,1fr); }
-      .meta-grid { grid-template-columns: 1fr; }
+      .meta-grid { grid-template-columns: 1fr 1fr; }
 
       .lightbox-nav { width: 36px; height: 36px; font-size: 1.35rem; }
       .lightbox-prev { left: 10px; }
@@ -836,6 +857,7 @@
 
     @media (max-width: 480px) {
       .thumbs { grid-template-columns: repeat(2,1fr); }
+      .meta-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -914,8 +936,26 @@
       </aside>
     </section>
 
+    <section class="mobile-contact-panel panel" id="mobileContactPanel">
+      <div class="mobile-contact-grid">
+        <div class="mini-card">
+          <div class="mini-label" data-i18n="miniAvailable">Available for</div>
+          <div class="mobile-contact-text" data-i18n="miniAvailableText">UI/UX collaborations, product design, decks</div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-label" data-i18n="mobileContactTitle">Contacts</div>
+          <div class="socials socials-mobile">
+            <a class="social-chip" href="https://t.me/beantny" target="_blank" rel="noopener noreferrer">Telegram: @beantny</a>
+            <a class="social-chip" href="https://x.com/beantny" target="_blank" rel="noopener noreferrer">X: @beeantny</a>
+            <a class="social-chip" href="https://farcaster.xyz/beantny" target="_blank" rel="noopener noreferrer">Farcaster: @beantny</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="projects">
-      <div class="section-head" id="projectsHead">
+      <div class="section-head">
         <div>
           <h2 data-i18n="projectsTitle">My Design Projects</h2>
           <p data-i18n="projectsText">Scroll horizontally to browse all 6 projects.</p>
@@ -923,196 +963,192 @@
         <span class="scroll-hint" data-i18n="scrollHint">← swipe / drag →</span>
       </div>
 
-      <div class="projects-pin-wrap" id="projectsPinWrap">
-        <div class="projects-pin" id="projectsPin">
-          <div class="projects-track" id="projectsTrack">
+      <div class="projects-track" id="projectsTrack">
 
-            <article class="project-card panel project-tone-pets">
-              <div class="project-visual">
-                <div class="project-cover" data-src="./assets/project1-cover.jpg">
-                  <img src="./assets/project1-cover.jpg" alt="Dolia Pets main interface with 3D cat character" width="960" height="540" loading="eager">
-                </div>
-                <div class="thumbs">
-                  <div class="thumb" data-src="./assets/project1-1.jpg"><img src="./assets/project1-1.jpg" alt="Dolia Pets customization dashboard" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project1-2.jpg"><img src="./assets/project1-2.jpg" alt="Dolia Pets NFT item detail" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project1-3.jpg"><img src="./assets/project1-3.jpg" alt="Dolia Pets marketplace grid" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project1-4.jpg"><img src="./assets/project1-4.jpg" alt="Dolia Pets 3D cat detail view" width="512" height="512" loading="lazy"></div>
-                </div>
-              </div>
-              <div class="project-body">
-                <div>
-                  <div class="project-title">
-                    <span class="pill" data-i18n="p1pill">Project #1</span>
-                    <h3 data-i18n="p1title">Dolia Pets</h3>
-                  </div>
-                  <p data-i18n="p1desc">Web3 pet ecosystem: game UI, NFT marketplace, pet customization and tokenomics flows packed into one unified visual style.</p>
-                </div>
-                <div class="meta-grid">
-                  <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p1role">UI/UX Designer, 3D Artist</span></div>
-                  <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p1focus">Game UI, marketplace, pet customization</span></div>
-                  <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p1platform">Web / AR / game ecosystem</span></div>
-                  <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p1style">Neon contrast, rounded, character-first</span></div>
-                </div>
-                <div class="gallery-note" data-i18n="p1note">Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.</div>
-              </div>
-            </article>
-
-            <article class="project-card panel project-tone-treasure">
-              <div class="project-visual">
-                <div class="project-cover" data-src="./assets/project2-cover.jpg">
-                  <img src="./assets/project2-cover.jpg" alt="Treasure Hunters world map with islands" width="960" height="540" loading="lazy">
-                </div>
-                <div class="thumbs">
-                  <div class="thumb" data-src="./assets/project2-1.jpg"><img src="./assets/project2-1.jpg" alt="Treasure Hunters inventory and shovel stats" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project2-2.jpg"><img src="./assets/project2-2.jpg" alt="Treasure Hunters marketplace with shovel skins" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project2-3.jpg"><img src="./assets/project2-3.jpg" alt="Treasure Hunters forging dialog" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project2-4.jpg"><img src="./assets/project2-4.jpg" alt="Treasure Hunters referral screen" width="512" height="512" loading="lazy"></div>
-                </div>
-              </div>
-              <div class="project-body">
-                <div>
-                  <div class="project-title">
-                    <span class="pill" data-i18n="p2pill">Project #2</span>
-                    <h3 data-i18n="p2title">Treasure Hunters</h3>
-                  </div>
-                  <p data-i18n="p2desc">Web3 digging game: shovels, staking, island map, on-chain swaps and referral rewards with a cartoon treasure-hunt aesthetic.</p>
-                </div>
-                <div class="meta-grid">
-                  <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p2role">UI/UX Designer</span></div>
-                  <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p2focus">Game HUD, staking, earning flows</span></div>
-                  <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p2platform">Web game with Web3</span></div>
-                  <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p2style">Warm sand tones, chunky controls</span></div>
-                </div>
-                <div class="gallery-note" data-i18n="p2note">Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.</div>
-              </div>
-            </article>
-
-            <article class="project-card panel project-tone-wallet">
-              <div class="project-visual">
-                <div class="project-cover" data-src="./assets/project3-cover.jpg">
-                  <img src="./assets/project3-cover.jpg" alt="Crypto wallet balance screen in Telegram-style dark UI" width="960" height="540" loading="lazy">
-                </div>
-                <div class="thumbs">
-                  <div class="thumb" data-src="./assets/project3-1.jpg"><img src="./assets/project3-1.jpg" alt="Add funds screen" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project3-2.jpg"><img src="./assets/project3-2.jpg" alt="P2P trade details screen" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project3-3.jpg"><img src="./assets/project3-3.jpg" alt="Trade confirmation flow" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project3-4.jpg"><img src="./assets/project3-4.jpg" alt="Profile and settings screen" width="512" height="512" loading="lazy"></div>
-                </div>
-              </div>
-              <div class="project-body">
-                <div>
-                  <div class="project-title">
-                    <span class="pill" data-i18n="p3pill">Project #3</span>
-                    <h3 data-i18n="p3title">Crypto Wallet</h3>
-                  </div>
-                  <p data-i18n="p3desc">Telegram crypto wallet concept for fast P2P exchange, gift transfers and simple portfolio view inside a messenger-native interface.</p>
-                </div>
-                <div class="meta-grid">
-                  <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p3role">UI/UX Designer</span></div>
-                  <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p3focus">P2P flows, gifting, portfolio</span></div>
-                  <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p3platform">Telegram mini app</span></div>
-                  <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p3style">Dark trading UI, compact cards</span></div>
-                </div>
-                <div class="gallery-note" data-i18n="p3note">Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.</div>
-              </div>
-            </article>
-
-            <article class="project-card panel project-tone-swap">
-              <div class="project-visual">
-                <div class="project-cover" data-src="./assets/project4-cover.jpg">
-                  <img src="./assets/project4-cover.jpg" alt="Swap app concept preview" width="960" height="540" loading="lazy">
-                </div>
-                <div class="thumbs">
-                  <div class="thumb" data-src="./assets/project4-1.jpg"><img src="./assets/project4-1.jpg" alt="Swap app flow screen" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project4-2.jpg"><img src="./assets/project4-2.jpg" alt="Swap app detail screen" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project4-3.jpg"><img src="./assets/project4-3.jpg" alt="Swap app interface state" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project4-4.jpg"><img src="./assets/project4-4.jpg" alt="Swap app presentation frame" width="512" height="512" loading="lazy"></div>
-                </div>
-              </div>
-              <div class="project-body">
-                <div>
-                  <div class="project-title">
-                    <span class="pill" data-i18n="p4pill">Project #4</span>
-                    <h3 data-i18n="p4title">Swap App</h3>
-                  </div>
-                  <p data-i18n="p4desc">Personal swap app concept with AI matching, per-item chats and playful search modes (bigger, random, smaller).</p>
-                </div>
-                <div class="meta-grid">
-                  <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p4role">UI/UX Designer — personal concept</span></div>
-                  <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p4focus">AI matching, item cards, chat</span></div>
-                  <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p4platform">Mobile app (iOS-first)</span></div>
-                  <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p4style">Clean white cards, bold type</span></div>
-                </div>
-                <div class="gallery-note" data-i18n="p4note">Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.</div>
-              </div>
-            </article>
-
-            <article class="project-card panel project-tone-snow">
-              <div class="project-visual">
-                <div class="project-cover" data-src="./assets/project5-cover.jpg">
-                  <img src="./assets/project5-cover.jpg" alt="Snowboard federation portal calendar screen" width="960" height="540" loading="lazy">
-                </div>
-                <div class="thumbs">
-                  <div class="thumb" data-src="./assets/project5-1.jpg"><img src="./assets/project5-1.jpg" alt="Snowboard calendar page" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project5-2.jpg"><img src="./assets/project5-2.jpg" alt="Snowboard learning page" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project5-3.jpg"><img src="./assets/project5-3.jpg" alt="Snowboard tournaments page" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project5-4.jpg"><img src="./assets/project5-4.jpg" alt="Snowboard portal home screen" width="512" height="512" loading="lazy"></div>
-                </div>
-              </div>
-              <div class="project-body">
-                <div>
-                  <div class="project-title">
-                    <span class="pill" data-i18n="p5pill">Project #5</span>
-                    <h3 data-i18n="p5title">Snowboard Portal</h3>
-                  </div>
-                  <p data-i18n="p5desc">Concept web portal for the Saint Petersburg Snowboard Federation — tournaments, training and event calendar in one athlete-friendly UI.</p>
-                </div>
-                <div class="meta-grid">
-                  <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p5role">UI/UX Designer</span></div>
-                  <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p5focus">Sports portal, calendar, events</span></div>
-                  <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p5platform">Web portal concept</span></div>
-                  <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p5style">Bright winter cards, accessible dashboards</span></div>
-                </div>
-                <div class="gallery-note" data-i18n="p5note">Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.</div>
-              </div>
-            </article>
-
-            <article class="project-card panel project-tone-graphic">
-              <div class="project-visual">
-                <div class="project-cover" data-src="./assets/project6-cover.jpg">
-                  <img src="./assets/project6-cover.jpg" alt="Graphic and presentation design main board" width="960" height="540" loading="lazy">
-                </div>
-                <div class="thumbs">
-                  <div class="thumb" data-src="./assets/project6-1.jpg"><img src="./assets/project6-1.jpg" alt="Presentation slide concept 1" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project6-2.jpg"><img src="./assets/project6-2.jpg" alt="Presentation slide concept 2" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project6-3.jpg"><img src="./assets/project6-3.jpg" alt="Presentation slide concept 3" width="512" height="512" loading="lazy"></div>
-                  <div class="thumb" data-src="./assets/project6-4.jpg"><img src="./assets/project6-4.jpg" alt="Presentation slide concept 4" width="512" height="512" loading="lazy"></div>
-                </div>
-              </div>
-              <div class="project-body">
-                <div>
-                  <div class="project-title">
-                    <span class="pill" data-i18n="p6pill">Project #6</span>
-                    <h3 data-i18n="p6title">Presentation & Graphic Design</h3>
-                  </div>
-                  <p data-i18n="p6desc">Exhibition signage for the State Hermitage Museum and a strategy deck for the Saint Petersburg Snowboard Federation.</p>
-                </div>
-                <div class="meta-grid">
-                  <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p6role">Graphic Designer, Presentation Designer</span></div>
-                  <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p6focus">Exhibition branding, data storytelling</span></div>
-                  <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p6platform">Large-scale print, digital slides</span></div>
-                  <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p6style">Strong type hierarchy, high-contrast palettes</span></div>
-                </div>
-                <div class="gallery-note" data-i18n="p6note">Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation.</div>
-              </div>
-            </article>
-
+        <article class="project-card panel project-tone-pets">
+          <div class="project-visual">
+            <div class="project-cover" data-src="./assets/project1-cover.jpg">
+              <img src="./assets/project1-cover.jpg" alt="Dolia Pets main interface with 3D cat character" width="960" height="540" loading="eager">
+            </div>
+            <div class="thumbs">
+              <div class="thumb" data-src="./assets/project1-1.jpg"><img src="./assets/project1-1.jpg" alt="Dolia Pets customization dashboard" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project1-2.jpg"><img src="./assets/project1-2.jpg" alt="Dolia Pets NFT item detail" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project1-3.jpg"><img src="./assets/project1-3.jpg" alt="Dolia Pets marketplace grid" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project1-4.jpg"><img src="./assets/project1-4.jpg" alt="Dolia Pets 3D cat detail view" width="512" height="512" loading="lazy"></div>
+            </div>
           </div>
-        </div>
+          <div class="project-body">
+            <div>
+              <div class="project-title">
+                <span class="pill" data-i18n="p1pill">Project #1</span>
+                <h3 data-i18n="p1title">Dolia Pets</h3>
+              </div>
+              <p data-i18n="p1desc">Web3 pet ecosystem: game UI, NFT marketplace, pet customization and tokenomics flows packed into one unified visual style.</p>
+            </div>
+            <div class="meta-grid">
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p1role">UI/UX Designer, 3D Artist</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p1focus">Game UI, marketplace, pet customization</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p1platform">Web / AR / game ecosystem</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p1style">Neon contrast, rounded, character-first</span></div>
+            </div>
+            <div class="gallery-note" data-i18n="p1note">Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.</div>
+          </div>
+        </article>
+
+        <article class="project-card panel project-tone-treasure">
+          <div class="project-visual">
+            <div class="project-cover" data-src="./assets/project2-cover.jpg">
+              <img src="./assets/project2-cover.jpg" alt="Treasure Hunters world map with islands" width="960" height="540" loading="lazy">
+            </div>
+            <div class="thumbs">
+              <div class="thumb" data-src="./assets/project2-1.jpg"><img src="./assets/project2-1.jpg" alt="Treasure Hunters inventory and shovel stats" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project2-2.jpg"><img src="./assets/project2-2.jpg" alt="Treasure Hunters marketplace with shovel skins" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project2-3.jpg"><img src="./assets/project2-3.jpg" alt="Treasure Hunters forging dialog" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project2-4.jpg"><img src="./assets/project2-4.jpg" alt="Treasure Hunters referral screen" width="512" height="512" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div>
+              <div class="project-title">
+                <span class="pill" data-i18n="p2pill">Project #2</span>
+                <h3 data-i18n="p2title">Treasure Hunters</h3>
+              </div>
+              <p data-i18n="p2desc">Web3 digging game: shovels, staking, island map, on-chain swaps and referral rewards with a cartoon treasure-hunt aesthetic.</p>
+            </div>
+            <div class="meta-grid">
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p2role">UI/UX Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p2focus">Game HUD, staking, earning flows</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p2platform">Web game with Web3</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p2style">Warm sand tones, chunky controls</span></div>
+            </div>
+            <div class="gallery-note" data-i18n="p2note">Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.</div>
+          </div>
+        </article>
+
+        <article class="project-card panel project-tone-wallet">
+          <div class="project-visual">
+            <div class="project-cover" data-src="./assets/project3-cover.jpg">
+              <img src="./assets/project3-cover.jpg" alt="Crypto wallet balance screen in Telegram-style dark UI" width="960" height="540" loading="lazy">
+            </div>
+            <div class="thumbs">
+              <div class="thumb" data-src="./assets/project3-1.jpg"><img src="./assets/project3-1.jpg" alt="Add funds screen" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project3-2.jpg"><img src="./assets/project3-2.jpg" alt="P2P trade details screen" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project3-3.jpg"><img src="./assets/project3-3.jpg" alt="Trade confirmation flow" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project3-4.jpg"><img src="./assets/project3-4.jpg" alt="Profile and settings screen" width="512" height="512" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div>
+              <div class="project-title">
+                <span class="pill" data-i18n="p3pill">Project #3</span>
+                <h3 data-i18n="p3title">Crypto Wallet</h3>
+              </div>
+              <p data-i18n="p3desc">Telegram crypto wallet concept for fast P2P exchange, gift transfers and simple portfolio view inside a messenger-native interface.</p>
+            </div>
+            <div class="meta-grid">
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p3role">UI/UX Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p3focus">P2P flows, gifting, portfolio</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p3platform">Telegram mini app</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p3style">Dark trading UI, compact cards</span></div>
+            </div>
+            <div class="gallery-note" data-i18n="p3note">Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.</div>
+          </div>
+        </article>
+
+        <article class="project-card panel project-tone-swap">
+          <div class="project-visual">
+            <div class="project-cover" data-src="./assets/project4-cover.jpg">
+              <img src="./assets/project4-cover.jpg" alt="Swap app concept preview" width="960" height="540" loading="lazy">
+            </div>
+            <div class="thumbs">
+              <div class="thumb" data-src="./assets/project4-1.jpg"><img src="./assets/project4-1.jpg" alt="Swap app flow screen" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project4-2.jpg"><img src="./assets/project4-2.jpg" alt="Swap app detail screen" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project4-3.jpg"><img src="./assets/project4-3.jpg" alt="Swap app interface state" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project4-4.jpg"><img src="./assets/project4-4.jpg" alt="Swap app presentation frame" width="512" height="512" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div>
+              <div class="project-title">
+                <span class="pill" data-i18n="p4pill">Project #4</span>
+                <h3 data-i18n="p4title">Swap App</h3>
+              </div>
+              <p data-i18n="p4desc">Personal swap app concept with AI matching, per-item chats and playful search modes (bigger, random, smaller).</p>
+            </div>
+            <div class="meta-grid">
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p4role">UI/UX Designer — personal concept</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p4focus">AI matching, item cards, chat</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p4platform">Mobile app (iOS-first)</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p4style">Clean white cards, bold type</span></div>
+            </div>
+            <div class="gallery-note" data-i18n="p4note">Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.</div>
+          </div>
+        </article>
+
+        <article class="project-card panel project-tone-snow">
+          <div class="project-visual">
+            <div class="project-cover" data-src="./assets/project5-cover.jpg">
+              <img src="./assets/project5-cover.jpg" alt="Snowboard federation portal calendar screen" width="960" height="540" loading="lazy">
+            </div>
+            <div class="thumbs">
+              <div class="thumb" data-src="./assets/project5-1.jpg"><img src="./assets/project5-1.jpg" alt="Snowboard calendar page" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project5-2.jpg"><img src="./assets/project5-2.jpg" alt="Snowboard learning page" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project5-3.jpg"><img src="./assets/project5-3.jpg" alt="Snowboard tournaments page" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project5-4.jpg"><img src="./assets/project5-4.jpg" alt="Snowboard portal home screen" width="512" height="512" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div>
+              <div class="project-title">
+                <span class="pill" data-i18n="p5pill">Project #5</span>
+                <h3 data-i18n="p5title">Snowboard Portal</h3>
+              </div>
+              <p data-i18n="p5desc">Concept web portal for the Saint Petersburg Snowboard Federation — tournaments, training and event calendar in one athlete-friendly UI.</p>
+            </div>
+            <div class="meta-grid">
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p5role">UI/UX Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p5focus">Sports portal, calendar, events</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p5platform">Web portal concept</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p5style">Bright winter cards, accessible dashboards</span></div>
+            </div>
+            <div class="gallery-note" data-i18n="p5note">Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.</div>
+          </div>
+        </article>
+
+        <article class="project-card panel project-tone-graphic">
+          <div class="project-visual">
+            <div class="project-cover" data-src="./assets/project6-cover.jpg">
+              <img src="./assets/project6-cover.jpg" alt="Graphic design and presentation work preview" width="960" height="540" loading="lazy">
+            </div>
+            <div class="thumbs">
+              <div class="thumb" data-src="./assets/project6-1.jpg"><img src="./assets/project6-1.jpg" alt="Hermitage exhibition graphics" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project6-2.jpg"><img src="./assets/project6-2.jpg" alt="Presentation deck slide" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project6-3.jpg"><img src="./assets/project6-3.jpg" alt="Strategic deck visual" width="512" height="512" loading="lazy"></div>
+              <div class="thumb" data-src="./assets/project6-4.jpg"><img src="./assets/project6-4.jpg" alt="Graphic design system preview" width="512" height="512" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div>
+              <div class="project-title">
+                <span class="pill" data-i18n="p6pill">Project #6</span>
+                <h3 data-i18n="p6title">Presentation & Graphic Design</h3>
+              </div>
+              <p data-i18n="p6desc">Exhibition signage for the State Hermitage Museum and a strategy deck for the Saint Petersburg Snowboard Federation.</p>
+            </div>
+            <div class="meta-grid">
+              <div class="meta"><strong data-i18n="roleLabel">Role</strong><span data-i18n="p6role">Graphic Designer, Presentation Designer</span></div>
+              <div class="meta"><strong data-i18n="focusLabel">Focus</strong><span data-i18n="p6focus">Exhibition branding, data storytelling</span></div>
+              <div class="meta"><strong data-i18n="platformLabel">Platform</strong><span data-i18n="p6platform">Large-scale print, digital slides</span></div>
+              <div class="meta"><strong data-i18n="styleLabel">Style</strong><span data-i18n="p6style">Strong type hierarchy, high-contrast palettes</span></div>
+            </div>
+            <div class="gallery-note" data-i18n="p6note">Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation.</div>
+          </div>
+        </article>
+
       </div>
     </section>
 
-    <footer class="footer" id="contact-footer" data-i18n="footerText">
+    <footer class="footer" data-i18n="footerText">
       Anton Bekker — UI / Product / Visual Design
     </footer>
   </main>
@@ -1120,173 +1156,83 @@
 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose" aria-label="Close"><span>×</span></button>
-  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image"><span>&larr;</span></button>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="Project image enlarged">
-  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image"><span>&rarr;</span></button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous"><span>←</span></button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next"><span>→</span></button>
 </div>
 
 <script>
   const track = document.getElementById('projectsTrack');
-  const pinWrap = document.getElementById('projectsPinWrap');
-  const pinElement = document.getElementById('projectsPin');
-  const header = document.getElementById('siteHeader');
-  const projectsHead = document.getElementById('projectsHead');
-  const root = document.documentElement;
+  let isPointerDown = false, startX = 0, startScrollLeft = 0, hasDragged = false;
+  const isMobile = () => window.matchMedia('(max-width:760px)').matches;
 
-  let isMobilePinned = window.matchMedia('(max-width: 760px) and (hover: none) and (pointer: coarse)').matches;
-
-  let isPointerDown = false;
-  let startX = 0;
-  let startScrollLeft = 0;
-  let hasDragged = false;
-  let mobileScrollBound = false;
-
-  function setMobileStickyTop() {
-    const headerRect = header ? header.getBoundingClientRect() : null;
-    const topValue = headerRect ? Math.ceil(headerRect.height + 6) : 84;
-    root.style.setProperty('--mobile-projects-sticky-top', `${topValue}px`);
-    return topValue;
-  }
-
-  function enableDesktopDrag() {
-    if (!track || isMobilePinned) return;
-
-    track.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', stopDragging);
-    window.addEventListener('pointercancel', stopDragging);
-  }
-
-  function disableDesktopDrag() {
-    if (!track) return;
-
-    track.removeEventListener('pointerdown', onPointerDown);
-    window.removeEventListener('pointermove', onPointerMove);
-    window.removeEventListener('pointerup', stopDragging);
-    window.removeEventListener('pointercancel', stopDragging);
-    stopDragging();
-  }
-
-  function onPointerDown(e) {
+  track.addEventListener('pointerdown', e => {
+    if (isMobile()) return;
     isPointerDown = true;
     hasDragged = false;
     startX = e.clientX;
     startScrollLeft = track.scrollLeft;
     track.classList.add('dragging');
-  }
+  });
 
-  function onPointerMove(e) {
-    if (!isPointerDown) return;
+  window.addEventListener('pointermove', e => {
+    if (!isPointerDown || isMobile()) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 6) hasDragged = true;
     track.scrollLeft = startScrollLeft - dx;
-  }
+  });
 
-  function stopDragging() {
+  function stopDrag() {
     isPointerDown = false;
-    if (track) track.classList.remove('dragging');
-    requestAnimationFrame(() => {
-      hasDragged = false;
-    });
+    track.classList.remove('dragging');
+    requestAnimationFrame(() => { hasDragged = false; });
   }
 
-  function updatePinnedScroll() {
-    if (!isMobilePinned || !track || !pinWrap || !pinElement) {
-      if (track) track.style.transform = 'translate3d(0,0,0)';
-      if (pinWrap) pinWrap.style.height = '';
+  window.addEventListener('pointerup', stopDrag);
+  window.addEventListener('pointercancel', stopDrag);
+
+  function initMobileSlideIn() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.project-card').forEach(c => c.classList.add('card-visible'));
       return;
     }
 
-    const cards = [...track.querySelectorAll('.project-card')];
-    if (!cards.length) return;
+    const cards = document.querySelectorAll('.project-card');
 
-    const stickyTop = setMobileStickyTop();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('card-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
+    });
 
-    const trackStyles = getComputedStyle(track);
-    const gap = parseFloat(trackStyles.columnGap || trackStyles.gap || 12);
+    cards.forEach(card => observer.observe(card));
+  }
 
-    const cardWidth = cards[0].offsetWidth;
-    const totalTrackWidth = cards.reduce((sum, card) => sum + card.offsetWidth, 0) + gap * (cards.length - 1);
-    const visibleWidth = pinWrap.clientWidth;
-    const maxTranslate = Math.max(0, totalTrackWidth - visibleWidth);
-
-    const tallestCard = Math.max(...cards.map(card => card.offsetHeight));
-    const headHeight = projectsHead ? projectsHead.offsetHeight : 0;
-    const extraBottom = 24;
-    const stickyBlockHeight = tallestCard + 12;
-
-    pinWrap.style.height = `${headHeight + stickyBlockHeight + maxTranslate + extraBottom}px`;
-
-    const wrapRect = pinWrap.getBoundingClientRect();
-    const startOffset = headHeight;
-    const scrollDistance = maxTranslate;
-
-    const pinStart = wrapRect.top + window.scrollY + startOffset - stickyTop;
-    const pinEnd = pinStart + scrollDistance;
-    const currentY = window.scrollY;
-
-    let progress = 0;
-    if (currentY <= pinStart) {
-      progress = 0;
-    } else if (currentY >= pinEnd) {
-      progress = maxTranslate;
+  function handleModeSwitch() {
+    if (isMobile()) {
+      initMobileSlideIn();
     } else {
-      progress = currentY - pinStart;
-    }
-
-    track.style.transform = `translate3d(${-progress}px, 0, 0)`;
-  }
-
-  function bindMobilePinnedScroll() {
-    if (mobileScrollBound) return;
-    window.addEventListener('scroll', updatePinnedScroll, { passive: true });
-    window.addEventListener('resize', handleViewportModeChange);
-    window.addEventListener('orientationchange', handleViewportModeChange);
-    mobileScrollBound = true;
-  }
-
-  function unbindMobilePinnedScroll() {
-    if (!mobileScrollBound) return;
-    window.removeEventListener('scroll', updatePinnedScroll);
-    window.removeEventListener('resize', handleViewportModeChange);
-    window.removeEventListener('orientationchange', handleViewportModeChange);
-    mobileScrollBound = false;
-  }
-
-  function handleViewportModeChange() {
-    const nextIsMobilePinned = window.matchMedia('(max-width: 760px) and (hover: none) and (pointer: coarse)').matches;
-    const modeChanged = nextIsMobilePinned !== isMobilePinned;
-    isMobilePinned = nextIsMobilePinned;
-
-    setMobileStickyTop();
-
-    if (isMobilePinned) {
-      disableDesktopDrag();
-      bindMobilePinnedScroll();
-      track.scrollLeft = 0;
-      requestAnimationFrame(updatePinnedScroll);
-    } else {
-      unbindMobilePinnedScroll();
-      track.style.transform = 'translate3d(0,0,0)';
-      pinWrap.style.height = '';
-      enableDesktopDrag();
-    }
-
-    if (!modeChanged && isMobilePinned) {
-      requestAnimationFrame(updatePinnedScroll);
+      document.querySelectorAll('.project-card').forEach(c => {
+        c.classList.add('card-visible');
+        c.style.opacity = '';
+        c.style.transform = '';
+      });
     }
   }
 
-  handleViewportModeChange();
+  handleModeSwitch();
+  window.matchMedia('(max-width:760px)').addEventListener('change', handleModeSwitch);
 
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
-  const lightboxClose = document.getElementById('lightboxClose');
-  const lightboxPrev = document.getElementById('lightboxPrev');
-  const lightboxNext = document.getElementById('lightboxNext');
-
-  let currentGallery = [];
-  let currentIndex = 0;
+  let currentGallery = [], currentIndex = 0;
 
   function openLightbox(gallery, index) {
     currentGallery = gallery;
@@ -1300,36 +1246,33 @@
   }
 
   function showPrev() {
-    if (!currentGallery.length) return;
     currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
     lightboxImg.src = currentGallery[currentIndex];
   }
 
   function showNext() {
-    if (!currentGallery.length) return;
     currentIndex = (currentIndex + 1) % currentGallery.length;
     lightboxImg.src = currentGallery[currentIndex];
   }
 
   document.querySelectorAll('.project-card').forEach(card => {
-    const galleryItems = Array.from(card.querySelectorAll('.project-cover, .thumb'));
-    const gallery = galleryItems.map(el => el.dataset.src || el.querySelector('img').src);
+    const items = Array.from(card.querySelectorAll('.project-cover, .thumb'));
+    const gallery = items.map(el => el.dataset.src || el.querySelector('img').src);
 
-    galleryItems.forEach((el, index) => {
+    items.forEach((el, i) => {
       el.addEventListener('click', e => {
         if (hasDragged) {
           e.preventDefault();
-          e.stopPropagation();
           return;
         }
-        openLightbox(gallery, index);
+        openLightbox(gallery, i);
       });
     });
   });
 
-  lightboxClose.addEventListener('click', closeLightbox);
-  lightboxPrev.addEventListener('click', showPrev);
-  lightboxNext.addEventListener('click', showNext);
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', showPrev);
+  document.getElementById('lightboxNext').addEventListener('click', showNext);
 
   lightbox.addEventListener('click', e => {
     if (e.target === lightbox) closeLightbox();
@@ -1344,146 +1287,148 @@
 
   const translations = {
     en: {
-      brandRole: "UI / Product / Visual Design",
-      navProjects: "Projects",
-      navContact: "Contact",
-      eyebrow: "Anton Bekker · Product & UI",
-      heroTitle: "Digital products, games and decks <br> I designed.",
-      heroText: "I build interfaces, visual systems and presentations — from Web3 games and wallets to sports portals and exhibition graphics.",
-      heroPrimary: "View selected work",
-      heroContact: "Contact",
-      miniProjects: "Projects",
-      miniFocus: "Focus",
-      miniFocusText: "UI, Web3, Game UI, Visual Design, Presentations",
-      miniAvailable: "Available for",
-      miniAvailableText: "UI/UX collaborations, product design, decks",
-      projectsTitle: "My Design Projects",
-      projectsText: "Scroll horizontally to browse all 6 projects.",
-      scrollHint: "← swipe / drag →",
-      footerText: "Anton Bekker — UI / Product / Visual Design",
-      roleLabel: "Role",
-      focusLabel: "Focus",
-      platformLabel: "Platform",
-      styleLabel: "Style",
-      p1pill: "Project #1",
-      p1title: "Dolia Pets",
-      p1desc: "Web3 pet ecosystem: game UI, NFT marketplace, pet customization and tokenomics flows packed into one unified visual style.",
-      p1role: "UI/UX Designer, 3D Artist",
-      p1focus: "Game UI, marketplace, pet customization",
-      p1platform: "Web / AR / game ecosystem",
-      p1style: "Neon contrast, rounded, character-first",
-      p1note: "Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.",
-      p2pill: "Project #2",
-      p2title: "Treasure Hunters",
-      p2desc: "Web3 digging game: shovels, staking, island map, on-chain swaps and referral rewards with a cartoon treasure-hunt aesthetic.",
-      p2role: "UI/UX Designer",
-      p2focus: "Game HUD, staking, earning flows",
-      p2platform: "Web game with Web3",
-      p2style: "Warm sand tones, chunky controls",
-      p2note: "Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.",
-      p3pill: "Project #3",
-      p3title: "Crypto Wallet",
-      p3desc: "Telegram crypto wallet concept for fast P2P exchange, gift transfers and simple portfolio view inside a messenger-native interface.",
-      p3role: "UI/UX Designer",
-      p3focus: "P2P flows, gifting, portfolio",
-      p3platform: "Telegram mini app",
-      p3style: "Dark trading UI, compact cards",
-      p3note: "Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.",
-      p4pill: "Project #4",
-      p4title: "Swap App",
-      p4desc: "Personal swap app concept with AI matching, per-item chats and playful search modes (bigger, random, smaller).",
-      p4role: "UI/UX Designer — personal concept",
-      p4focus: "AI matching, item cards, chat",
-      p4platform: "Mobile app (iOS-first)",
-      p4style: "Clean white cards, bold type",
-      p4note: "Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.",
-      p5pill: "Project #5",
-      p5title: "Snowboard Portal",
-      p5desc: "Concept web portal for the Saint Petersburg Snowboard Federation — tournaments, training and event calendar in one athlete-friendly UI.",
-      p5role: "UI/UX Designer",
-      p5focus: "Sports portal, calendar, events",
-      p5platform: "Web portal concept",
-      p5style: "Bright winter cards, accessible dashboards",
-      p5note: "Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.",
-      p6pill: "Project #6",
-      p6title: "Presentation & Graphic Design",
-      p6desc: "Exhibition signage for the State Hermitage Museum and a strategy deck for the Saint Petersburg Snowboard Federation.",
-      p6role: "Graphic Designer, Presentation Designer",
-      p6focus: "Exhibition branding, data storytelling",
-      p6platform: "Large-scale print, digital slides",
-      p6style: "Strong type hierarchy, high-contrast palettes",
-      p6note: "Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation."
+      brandRole:"UI / Product / Visual Design",
+      navProjects:"Projects",
+      navContact:"Contact",
+      eyebrow:"Anton Bekker · Product & UI",
+      heroTitle:"Digital products, games and decks <br> I designed.",
+      heroText:"I build interfaces, visual systems and presentations — from Web3 games and wallets to sports portals and exhibition graphics.",
+      heroPrimary:"View selected work",
+      heroContact:"Contact",
+      miniProjects:"Projects",
+      miniFocus:"Focus",
+      miniFocusText:"UI, Web3, Game UI, Visual Design, Presentations",
+      miniAvailable:"Available for",
+      miniAvailableText:"UI/UX collaborations, product design, decks",
+      mobileContactTitle:"Contacts",
+      projectsTitle:"My Design Projects",
+      projectsText:"Scroll horizontally to browse all 6 projects.",
+      scrollHint:"← swipe / drag →",
+      footerText:"Anton Bekker — UI / Product / Visual Design",
+      roleLabel:"Role",
+      focusLabel:"Focus",
+      platformLabel:"Platform",
+      styleLabel:"Style",
+      p1pill:"Project #1",
+      p1title:"Dolia Pets",
+      p1desc:"Web3 pet ecosystem: game UI, NFT marketplace, pet customization and tokenomics flows packed into one unified visual style.",
+      p1role:"UI/UX Designer, 3D Artist",
+      p1focus:"Game UI, marketplace, pet customization",
+      p1platform:"Web / AR / game ecosystem",
+      p1style:"Neon contrast, rounded, character-first",
+      p1note:"Virtual pet care, mini-games, collectible skins and NFT-style assets — combined into one product direction.",
+      p2pill:"Project #2",
+      p2title:"Treasure Hunters",
+      p2desc:"Web3 digging game: shovels, staking, island map, on-chain swaps and referral rewards with a cartoon treasure-hunt aesthetic.",
+      p2role:"UI/UX Designer",
+      p2focus:"Game HUD, staking, earning flows",
+      p2platform:"Web game with Web3",
+      p2style:"Warm sand tones, chunky controls",
+      p2note:"Swap and staking panels, referral ladders, and windows-style dialogs surface on-chain actions without losing the casual mood.",
+      p3pill:"Project #3",
+      p3title:"Crypto Wallet",
+      p3desc:"Telegram crypto wallet concept for fast P2P exchange, gift transfers and simple portfolio view inside a messenger-native interface.",
+      p3role:"UI/UX Designer",
+      p3focus:"P2P flows, gifting, portfolio",
+      p3platform:"Telegram mini app",
+      p3style:"Dark trading UI, compact cards",
+      p3note:"Full Figma flow covering wallet, P2P, history, referral and settings to keep the bot experience consistent across all states.",
+      p4pill:"Project #4",
+      p4title:"Swap App",
+      p4desc:"Personal swap app concept with AI matching, per-item chats and playful search modes (bigger, random, smaller).",
+      p4role:"UI/UX Designer — personal concept",
+      p4focus:"AI matching, item cards, chat",
+      p4platform:"Mobile app (iOS-first)",
+      p4style:"Clean white cards, bold type",
+      p4note:"Explores how AI can make non-monetary exchange feel as smooth as modern e-commerce while keeping the playful randomness of swapping.",
+      p5pill:"Project #5",
+      p5title:"Snowboard Portal",
+      p5desc:"Concept web portal for the Saint Petersburg Snowboard Federation — tournaments, training and event calendar in one athlete-friendly UI.",
+      p5role:"UI/UX Designer",
+      p5focus:"Sports portal, calendar, events",
+      p5platform:"Web portal concept",
+      p5style:"Bright winter cards, accessible dashboards",
+      p5note:"Explores how a regional sports federation can feel modern and friendly while handling calendars, competitions and onboarding in one UI system.",
+      p6pill:"Project #6",
+      p6title:"Presentation & Graphic Design",
+      p6desc:"Exhibition signage for the State Hermitage Museum and a strategy deck for the Saint Petersburg Snowboard Federation.",
+      p6role:"Graphic Designer, Presentation Designer",
+      p6focus:"Exhibition branding, data storytelling",
+      p6platform:"Large-scale print, digital slides",
+      p6style:"Strong type hierarchy, high-contrast palettes",
+      p6note:"Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation."
     },
     ru: {
-      brandRole: "UI / Product / Visual Design",
-      navProjects: "Проекты",
-      navContact: "Контакты",
-      eyebrow: "Anton Bekker · Product & UI",
-      heroTitle: "Цифровые продукты, игровые интерфейсы <br>и презентации, которые я спроектировал.",
-      heroText: "Создаю интерфейсы, визуальные системы и презентации — от Web3-игр и криптокошельков до спортивных порталов и выставочной графики.",
-      heroPrimary: "Смотреть проекты",
-      heroContact: "Связаться",
-      miniProjects: "Проекты",
-      miniFocus: "Фокус",
-      miniFocusText: "UI, Web3, Game UI, визуальный дизайн, презентации",
-      miniAvailable: "Открыт к сотрудничеству",
-      miniAvailableText: "UI/UX, product design, презентации и визуальные системы",
-      projectsTitle: "Мои дизайн-проекты",
-      projectsText: "Листай горизонтально, чтобы посмотреть все 6 проектов.",
-      scrollHint: "← свайп / drag →",
-      footerText: "Anton Bekker — UI / Product / Visual Design",
-      roleLabel: "Роль",
-      focusLabel: "Фокус",
-      platformLabel: "Платформа",
-      styleLabel: "Стиль",
-      p1pill: "Проект #1",
-      p1title: "Dolia Pets",
-      p1desc: "Web3-экосистема виртуальных питомцев: game UI, NFT marketplace, кастомизация персонажа и tokenomics flows в едином визуальном стиле.",
-      p1role: "UI/UX Designer, 3D Artist",
-      p1focus: "Game UI, marketplace, pet customization",
-      p1platform: "Web / AR / game ecosystem",
-      p1style: "Neon contrast, rounded, character-first",
-      p1note: "Уход за виртуальным питомцем, мини-игры, коллекционные скины и NFT-логика собраны в одно цельное продуктовое направление.",
-      p2pill: "Проект #2",
-      p2title: "Treasure Hunters",
-      p2desc: "Web3-игра про раскопки: shovel system, staking, карта островов, on-chain swap и referral rewards в мультяшной treasure-hunt эстетике.",
-      p2role: "UI/UX Designer",
-      p2focus: "Game HUD, staking, earning flows",
-      p2platform: "Web game with Web3",
-      p2style: "Warm sand tones, chunky controls",
-      p2note: "Панели свапа и стейкинга, реферальные механики и игровые диалоги помогают показать on-chain действия без потери лёгкого игрового настроения.",
-      p3pill: "Проект #3",
-      p3title: "Crypto Wallet",
-      p3desc: "Концепт Telegram-кошелька для быстрых P2P-обменов, подарочных переводов и простого обзора портфеля внутри messenger-native интерфейса.",
-      p3role: "UI/UX Designer",
-      p3focus: "P2P flows, gifting, portfolio",
-      p3platform: "Telegram mini app",
-      p3style: "Dark trading UI, compact cards",
-      p3note: "Полный Figma-flow для wallet, P2P, истории, referral и настроек, чтобы весь опыт внутри бота ощущался цельным.",
-      p4pill: "Проект #4",
-      p4title: "Swap App",
-      p4desc: "Личный концепт swap-приложения с AI matching, чатами по каждому предмету и игровыми режимами поиска: bigger, random, smaller.",
-      p4role: "UI/UX Designer — personal concept",
-      p4focus: "AI matching, item cards, chat",
-      p4platform: "Mobile app (iOS-first)",
-      p4style: "Clean white cards, bold type",
-      p4note: "Исследование того, как AI может сделать обмен без денег таким же плавным, как современный e-commerce, но сохранить азарт случайного свапа.",
-      p5pill: "Проект #5",
-      p5title: "Snowboard Portal",
-      p5desc: "Концепт веб-портала для Федерации сноуборда Санкт-Петербурга — турниры, тренировки и календарь событий в удобном athlete-friendly UI.",
-      p5role: "UI/UX Designer",
-      p5focus: "Sports portal, calendar, events",
-      p5platform: "Web portal concept",
-      p5style: "Bright winter cards, accessible dashboards",
-      p5note: "Показывает, как региональный спортивный портал может выглядеть современно и дружелюбно, объединяя календарь, соревнования и onboarding в одной UI-системе.",
-      p6pill: "Проект #6",
-      p6title: "Presentation & Graphic Design",
-      p6desc: "Выставочная графика для Государственного Эрмитажа и стратегическая презентация для Федерации сноуборда Санкт-Петербурга.",
-      p6role: "Graphic Designer, Presentation Designer",
-      p6focus: "Exhibition branding, data storytelling",
-      p6platform: "Large-scale print, digital slides",
-      p6style: "Strong type hierarchy, high-contrast palettes",
-      p6note: "Абстрактные идеи превращены в визуальные системы — от музейной навигации до стратегических презентаций для спортивной федерации."
+      brandRole:"UI / Product / Visual Design",
+      navProjects:"Проекты",
+      navContact:"Контакты",
+      eyebrow:"Anton Bekker · Product & UI",
+      heroTitle:"Цифровые продукты, игровые интерфейсы <br>и презентации, которые я спроектировал.",
+      heroText:"Создаю интерфейсы, визуальные системы и презентации — от Web3-игр и криптокошельков до спортивных порталов и выставочной графики.",
+      heroPrimary:"Смотреть проекты",
+      heroContact:"Связаться",
+      miniProjects:"Проекты",
+      miniFocus:"Фокус",
+      miniFocusText:"UI, Web3, Game UI, визуальный дизайн, презентации",
+      miniAvailable:"Открыт к сотрудничеству",
+      miniAvailableText:"UI/UX collaborations, product design, презентации и визуальные системы",
+      mobileContactTitle:"Контакты",
+      projectsTitle:"Мои дизайн-проекты",
+      projectsText:"Листай вниз, чтобы посмотреть все 6 проектов.",
+      scrollHint:"← свайп / drag →",
+      footerText:"Anton Bekker — UI / Product / Visual Design",
+      roleLabel:"Роль",
+      focusLabel:"Фокус",
+      platformLabel:"Платформа",
+      styleLabel:"Стиль",
+      p1pill:"Проект #1",
+      p1title:"Dolia Pets",
+      p1desc:"Web3-экосистема виртуальных питомцев: game UI, NFT marketplace, кастомизация персонажа и tokenomics flows в едином визуальном стиле.",
+      p1role:"UI/UX Designer, 3D Artist",
+      p1focus:"Game UI, marketplace, pet customization",
+      p1platform:"Web / AR / game ecosystem",
+      p1style:"Neon contrast, rounded, character-first",
+      p1note:"Уход за виртуальным питомцем, мини-игры, коллекционные скины и NFT-логика собраны в одно цельное продуктовое направление.",
+      p2pill:"Проект #2",
+      p2title:"Treasure Hunters",
+      p2desc:"Web3-игра про раскопки: shovel system, staking, карта островов, on-chain swap и referral rewards в мультяшной treasure-hunt эстетике.",
+      p2role:"UI/UX Designer",
+      p2focus:"Game HUD, staking, earning flows",
+      p2platform:"Web game with Web3",
+      p2style:"Warm sand tones, chunky controls",
+      p2note:"Панели свапа и стейкинга, реферальные механики и игровые диалоги помогают показать on-chain действия без потери лёгкого игрового настроения.",
+      p3pill:"Проект #3",
+      p3title:"Crypto Wallet",
+      p3desc:"Концепт Telegram-кошелька для быстрых P2P-обменов, подарочных переводов и простого обзора портфеля внутри messenger-native интерфейса.",
+      p3role:"UI/UX Designer",
+      p3focus:"P2P flows, gifting, portfolio",
+      p3platform:"Telegram mini app",
+      p3style:"Dark trading UI, compact cards",
+      p3note:"Полный Figma-flow для wallet, P2P, истории, referral и настроек, чтобы весь опыт внутри бота ощущался цельным.",
+      p4pill:"Проект #4",
+      p4title:"Swap App",
+      p4desc:"Личный концепт swap-приложения с AI matching, чатами по каждому предмету и игровыми режимами поиска: bigger, random, smaller.",
+      p4role:"UI/UX Designer — personal concept",
+      p4focus:"AI matching, item cards, chat",
+      p4platform:"Mobile app (iOS-first)",
+      p4style:"Clean white cards, bold type",
+      p4note:"Исследование того, как AI может сделать обмен без денег таким же плавным, как современный e-commerce, но сохранить азарт случайного свапа.",
+      p5pill:"Проект #5",
+      p5title:"Snowboard Portal",
+      p5desc:"Концепт веб-портала для Федерации сноуборда Санкт-Петербурга — турниры, тренировки и календарь событий в удобном athlete-friendly UI.",
+      p5role:"UI/UX Designer",
+      p5focus:"Sports portal, calendar, events",
+      p5platform:"Web portal concept",
+      p5style:"Bright winter cards, accessible dashboards",
+      p5note:"Показывает, как региональный спортивный портал может выглядеть современно и дружелюбно, объединяя календарь, соревнования и onboarding в одной UI-системе.",
+      p6pill:"Проект #6",
+      p6title:"Presentation & Graphic Design",
+      p6desc:"Выставочная графика для Государственного Эрмитажа и стратегическая презентация для Федерации сноуборда Санкт-Петербурга.",
+      p6role:"Graphic Designer, Presentation Designer",
+      p6focus:"Exhibition branding, data storytelling",
+      p6platform:"Large-scale print, digital slides",
+      p6style:"Strong type hierarchy, high-contrast palettes",
+      p6note:"Абстрактные идеи превращены в визуальные системы — от музейной навигации до стратегических презентаций для спортивной федерации."
     }
   };
 
@@ -1491,25 +1436,16 @@
     document.documentElement.lang = lang;
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
-      if (translations[lang] && translations[lang][key]) {
-        el.innerHTML = translations[lang][key];
-      }
-    });
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === lang);
+      if (translations[lang]?.[key]) el.innerHTML = translations[lang][key];
     });
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        handleViewportModeChange();
-      });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
     });
   }
 
   document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setLanguage(btn.dataset.lang);
-    });
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
   });
 
   setLanguage('en');
