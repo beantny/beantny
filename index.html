@@ -443,35 +443,14 @@
       white-space: nowrap;
     }
 
+
+
     .projects-track {
-      display: flex;
-      flex-direction: row;
-      gap: 16px;
-      overflow-x: auto;
-      overflow-y: visible;
-      scroll-snap-type: x proximity;
-      -webkit-overflow-scrolling: touch;
-      padding-top: 6px;
-      margin-top: -6px;
-      padding-bottom: 12px;
-      cursor: grab;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: pan-y;
-      overscroll-behavior-x: contain;
-      will-change: transform;
+      display: contents;
     }
 
     .projects-track.dragging {
-      cursor: grabbing;
-      scroll-snap-type: none;
-    }
-
-    .projects-track::-webkit-scrollbar { height: 4px; }
-    .projects-track::-webkit-scrollbar-track { background: transparent; }
-    .projects-track::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,.12);
-      border-radius: 999px;
+      cursor: default;
     }
 
     .project-card {
@@ -479,6 +458,8 @@
       scroll-snap-align: start;
       display: grid;
       grid-template-columns: 1.1fr .9fr;
+      grid-auto-rows: 1fr;
+      align-items: stretch;
       gap: 14px;
       padding: 14px;
       -webkit-user-drag: none;
@@ -560,6 +541,7 @@
       flex-direction: column;
       gap: 12px;
       min-width: 0;
+      height: 100%;
     }
 
     .project-cover {
@@ -570,6 +552,7 @@
       background: var(--surface2);
       cursor: pointer;
       min-width: 0;
+      flex-shrink: 0; /* don't shrink on desktop */
     }
 
     .project-cover img {
@@ -614,9 +597,11 @@
     .project-body {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      justify-content: flex-start;
+      gap: 12px;
       padding: 4px 0;
       min-width: 0;
+      height: 100%;
     }
 
     .project-title {
@@ -659,34 +644,44 @@
     .meta-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 7px;
       align-items: start;
+      align-content: start;
       min-width: 0;
     }
 
     .meta {
-      padding: 12px 14px;
+      padding: 10px 12px 11px;
       border-radius: var(--r-md);
       background: rgba(15,22,36,.82);
       border: 1px solid var(--border);
-      font-size: .82rem;
-      line-height: 1.45;
+      font-size: .8rem;
+      line-height: 1.3;
       backdrop-filter: blur(8px);
       min-width: 0;
       overflow: hidden;
+      display: grid;
+      align-content: start;
+      min-height: 92px;
     }
 
     .meta strong {
       display: block;
-      font-size: .7rem;
+      font-size: .64rem;
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--faint);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .meta span {
-      display: block;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      overflow: hidden;
+      min-height: calc(1.3em * 2.55);
+      max-height: calc(1.3em * 2.55);
       overflow-wrap: anywhere;
     }
 
@@ -699,6 +694,7 @@
       color: var(--muted);
       backdrop-filter: blur(8px);
       overflow-wrap: anywhere;
+      margin-top: 6px;
     }
 
     .footer {
@@ -814,11 +810,59 @@
         .project-stage {
       flex: 0 0 min(960px, calc(100vw - 56px));
       min-width: 0;
+      display: flex; /* stretch inner card to full height */
+      flex-direction: column;
     }
 
     .project-stage > .project-card {
       width: 100%;
+      flex: 1 1 auto; /* fill the stage height */
     }
+
+    .projects-section-pin {
+      --pin-top: 92px;
+      --pin-gap: 16px;
+      --pin-card-width: min(960px, calc(100vw - 56px));
+    }
+
+    @media (max-width: 1100px) {
+      .projects-section-pin {
+        --pin-top: 86px;
+        --pin-card-width: min(860px, calc(100vw - 40px));
+      }
+    }
+
+
+    .projects-mobile-pin {
+      display: block;
+      position: relative;
+    }
+
+    .projects-mobile-sticky {
+      position: sticky;
+      top: 92px;
+      overflow: visible;
+      padding-top: 18px;
+    }
+
+    .projects-mobile-rail {
+      display: flex;
+      gap: 16px;
+      will-change: transform;
+      transform: translate3d(var(--rail-shift, 0px), 0, 0);
+    }
+
+    .projects-track {
+      display: contents;
+    }
+
+    .projects-mobile-rail .project-stage {
+      flex: 0 0 min(960px, calc(100vw - 56px));
+      width: min(960px, calc(100vw - 56px));
+      margin: 0;
+      padding: 0;
+    }
+
 
 @media (max-width: 1100px) {
       .hero { grid-template-columns: 1fr; }
@@ -826,8 +870,46 @@
     }
 
     @media (max-width: 980px) {
-      .header-bar { align-items: flex-start; }
-      .header-right { width: 100%; justify-content: space-between; }
+      .header-bar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .brand > div {
+        min-width: 0;
+      }
+
+      .brand > div > div:first-child {
+        font-size: clamp(1rem, .92rem + .3vw, 1.2rem);
+        line-height: 1.02;
+      }
+
+      .brand > div > div:last-child {
+        font-size: .82rem !important;
+        line-height: 1.3;
+      }
+
+      .header-right {
+        width: auto;
+        max-width: 100%;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+      }
+
+      .nav {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .nav a {
+        padding-inline: 12px;
+      }
     }
 
     @media (max-width: 760px) {
@@ -933,69 +1015,104 @@
       .scroll-hint { display: none; }
 
       .section-head {
-        margin: 24px 0 12px;
+        margin: 24px 0 14px;
         align-items: flex-start;
       }
 
-      .projects-track {
-        display: block;
+      .scroll-hint { 
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: .78rem;
+        color: var(--faint);
+      }
+
+      .projects-mobile-pin {
+        position: relative;
         overflow: visible;
-        padding-top: 0;
-        margin-top: 0;
-        padding-bottom: 0;
-        cursor: auto;
-        user-select: auto;
-        -webkit-user-select: auto;
-        touch-action: pan-y;
-        overscroll-behavior-x: none;
-        overscroll-behavior-y: contain;
-        scroll-snap-type: none;
-        perspective: 1400px;
+      }
+
+      .projects-mobile-sticky {
+        position: sticky;
+        top: var(--pin-top, 92px);
+        overflow: visible;
+        padding-top: 18px;
+      }
+
+      .projects-mobile-rail {
+        display: flex;
+        gap: var(--pin-gap, 16px);
+        transform: translate3d(var(--rail-shift, 0px), 0, 0);
+        will-change: transform;
+      }
+
+      .projects-track {
+        display: contents;
       }
 
       .projects-track.dragging {
-        cursor: auto;
+        cursor: default;
       }
 
       .project-stage {
+        flex: 0 0 var(--pin-card-width, min(960px, calc(100vw - 56px)));
+        width: var(--pin-card-width, min(960px, calc(100vw - 56px)));
         display: block;
-        margin: 0 0 18px;
+        margin: 0;
+        padding: 0;
       }
 
       .project-card {
         position: relative;
-        flex: none;
         width: 100%;
         min-width: 0;
         max-width: 100%;
-        grid-template-columns: 1fr;
-        padding: 12px;
-        opacity: 0;
-        transform: translateY(26px) scale(.985);
+        padding: 14px;
+        opacity: .62;
+        transform: scale(.975);
         transform-origin: 50% 50%;
         will-change: transform, opacity;
         transition:
-          transform .6s cubic-bezier(.16,1,.3,1),
-          opacity .6s cubic-bezier(.16,1,.3,1),
-          box-shadow .28s ease,
-          border-color .28s ease;
-      }
-
-      .project-card.mobile-visible {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-
-      .project-card.mobile-reveal-soft {
-        opacity: .82;
-        transform: translateY(12px) scale(.992);
+          transform .24s cubic-bezier(.16,1,.3,1),
+          opacity .24s cubic-bezier(.16,1,.3,1),
+          box-shadow .24s ease,
+          border-color .24s ease;
       }
 
       .project-card.mobile-active {
+        opacity: 1;
+        transform: scale(1);
         box-shadow:
           0 20px 56px rgba(0,0,0,.34),
           0 0 0 1px rgba(255,255,255,.04),
           inset 0 1px 0 rgba(255,255,255,.02);
+      }
+
+      .project-card.mobile-near {
+        opacity: .84;
+        transform: scale(.987);
+      }
+
+      @media (max-width: 760px) {
+        .projects-mobile-pin {
+          margin: 0 -12px;
+        }
+
+        .projects-mobile-sticky {
+          top: 78px;
+          padding: 12px 12px 0;
+        }
+
+        .projects-section-pin {
+          --pin-top: 78px;
+          --pin-gap: 12px;
+          --pin-card-width: calc(100vw - 24px);
+        }
+
+        .project-card {
+          grid-template-columns: 1fr;
+          padding: 12px;
+        }
       }
 
       .project-visual { gap: 10px; }
@@ -1033,6 +1150,14 @@
         flex-direction: column;
         justify-content: flex-start;
         align-self: start;
+      }
+
+      .meta span {
+        display: block;
+        min-height: 0;
+        max-height: none;
+        -webkit-line-clamp: unset;
+        line-clamp: unset;
       }
 
       .meta strong {
@@ -1165,7 +1290,7 @@
       </div>
     </section>
 
-    <section id="projects">
+    <section id="projects" class="projects-section-pin">
       <div class="section-head">
         <div>
           <h2 data-i18n="projectsTitle">My Design Projects</h2>
@@ -1174,7 +1299,7 @@
         <span class="scroll-hint" data-i18n="scrollHint">← swipe cards →</span>
       </div>
 
-      <div class="projects-track" id="projectsTrack">
+      <div class="projects-mobile-pin" id="projectsMobilePin"><div class="projects-mobile-sticky"><div class="projects-mobile-rail" id="projectsMobileRail"><div class="projects-track" id="projectsTrack">
               <div class="project-stage">
         <article class="project-card panel project-tone-pets">
           <div class="project-visual">
@@ -1365,7 +1490,7 @@
             <div class="gallery-note" data-i18n="p6note">Abstract narratives turned into visual systems — from museum signage to strategic decks for a sports federation.</div>
           </div>
         </article>
-      </div></div>
+      </div></div></div></div>
     </section>
 
     <footer class="footer" data-i18n="footerText">
@@ -1388,6 +1513,7 @@
   const isMobile = () => mqMobile.matches;
 
   track.addEventListener('pointerdown', e => {
+    if (isMobile()) return;
     isPointerDown = true;
     hasDragged = false;
     startX = e.clientX;
@@ -1396,10 +1522,9 @@
   });
 
   window.addEventListener('pointermove', e => {
-    if (!isPointerDown) return;
+    if (!isPointerDown || isMobile()) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 6) hasDragged = true;
-    track.scrollLeft = startScrollLeft - dx;
   });
 
   function stopDrag() {
@@ -1471,52 +1596,97 @@
   let mobileResizeHandler = null;
   let mobileRaf = null;
 
+  // ── VERTICAL-SCROLL HORIZONTAL CAROUSEL ──
   function clearMobileStates() {
+    if (mobileObserver) { mobileObserver.disconnect(); mobileObserver = null; }
+    if (mobileScrollHandler) {
+      window.removeEventListener('scroll', mobileScrollHandler);
+      window.removeEventListener('resize', mobileResizeHandler);
+    }
+    if (mobileRaf) {
+      cancelAnimationFrame(mobileRaf);
+      mobileRaf = null;
+    }
+
+    const pin = document.getElementById('projectsMobilePin');
+    const rail = document.getElementById('projectsMobileRail');
+    if (pin) pin.style.height = '';
+    if (rail) rail.style.removeProperty('--rail-shift');
+
     document.querySelectorAll('.project-card').forEach(card => {
-      card.classList.remove('mobile-visible');
-      card.style.transform = '';
+      card.classList.remove('mobile-active', 'mobile-near');
       card.style.opacity = '';
-      card.style.filter = '';
+      card.style.transform = '';
     });
   }
 
   function setupMobileProjectFlow() {
-    const cards = [...document.querySelectorAll('.project-card')];
-    if (!cards.length) return;
+    const section = document.getElementById('projects');
+    const pin = document.getElementById('projectsMobilePin');
+    const sticky = pin?.querySelector('.projects-mobile-sticky');
+    const rail = document.getElementById('projectsMobileRail');
+    const stages = [...document.querySelectorAll('#projectsTrack .project-stage')];
+    const cards = [...document.querySelectorAll('#projectsTrack .project-card')];
+    if (!section || !pin || !sticky || !rail || !stages.length) return;
 
-    const revealCards = () => {
-      cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const visibleX = rect.left < window.innerWidth - 40 && rect.right > 40;
-        if (visibleX) card.classList.add('mobile-visible');
+    const css = getComputedStyle(section);
+
+    const updateMetrics = () => {
+      const gap = parseFloat(css.getPropertyValue('--pin-gap')) || (window.innerWidth <= 760 ? 12 : 16);
+      const stageWidth = stages[0].offsetWidth || (window.innerWidth <= 760 ? window.innerWidth - 24 : Math.min(960, window.innerWidth - 56));
+      const viewportH = window.innerHeight || document.documentElement.clientHeight;
+      const totalWidth = stages.length * stageWidth + (stages.length - 1) * gap;
+      const visibleWidth = sticky.clientWidth || window.innerWidth;
+      const maxShift = Math.max(0, totalWidth - visibleWidth);
+      const stickyHeight = sticky.offsetHeight;
+      const scrollDistance = Math.max(maxShift + viewportH * 0.38, viewportH * 0.82);
+      pin.style.height = `${stickyHeight + scrollDistance}px`;
+      return { gap, stageWidth, viewportH, totalWidth, visibleWidth, maxShift, stickyHeight, scrollDistance };
+    };
+
+    let metrics = updateMetrics();
+
+    const updateScenario = () => {
+      metrics = updateMetrics();
+      const rect = pin.getBoundingClientRect();
+      const traveled = Math.min(Math.max(-rect.top, 0), metrics.maxShift);
+      rail.style.setProperty('--rail-shift', `${-traveled.toFixed(2)}px`);
+
+      const unit = metrics.stageWidth + metrics.gap;
+      const indexFloat = unit > 0 ? traveled / unit : 0;
+
+      cards.forEach((card, index) => {
+        const dist = Math.abs(index - indexFloat);
+        card.classList.toggle('mobile-active', dist < 0.38);
+        card.classList.toggle('mobile-near', dist >= 0.38 && dist < 1.08);
       });
     };
 
     mobileScrollHandler = () => {
       if (mobileRaf) cancelAnimationFrame(mobileRaf);
-      mobileRaf = requestAnimationFrame(revealCards);
+      mobileRaf = requestAnimationFrame(updateScenario);
     };
 
     mobileResizeHandler = () => {
       if (mobileRaf) cancelAnimationFrame(mobileRaf);
-      mobileRaf = requestAnimationFrame(revealCards);
+      mobileRaf = requestAnimationFrame(() => {
+        updateMetrics();
+        updateScenario();
+      });
     };
 
-    const track = document.getElementById('projectsTrack');
-    if (track) track.addEventListener('scroll', mobileScrollHandler, { passive: true });
+    window.addEventListener('scroll', mobileScrollHandler, { passive: true });
     window.addEventListener('resize', mobileResizeHandler);
-    revealCards();
+    updateScenario();
   }
 
   function handleResponsiveMode() {
     clearMobileStates();
-    if (window.matchMedia('(max-width:760px)').matches) {
-      setupMobileProjectFlow();
-    }
+    setupMobileProjectFlow();
   }
 
   handleResponsiveMode();
-  window.matchMedia('(max-width:760px)').addEventListener('change', handleResponsiveMode);
+  window.addEventListener('resize', handleResponsiveMode);
 
   const translations = {
     en: {
