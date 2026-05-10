@@ -1044,6 +1044,7 @@
         gap: var(--pin-gap, 16px);
         transform: translate3d(var(--rail-shift, 0px), 0, 0);
         will-change: transform;
+        transition: none;
       }
 
       .projects-track {
@@ -1073,10 +1074,8 @@
         transform-origin: 50% 50%;
         will-change: transform, opacity;
         transition:
-          transform .24s cubic-bezier(.16,1,.3,1),
-          opacity .24s cubic-bezier(.16,1,.3,1),
-          box-shadow .24s ease,
-          border-color .24s ease;
+          box-shadow .2s ease,
+          border-color .2s ease;
       }
 
       .project-card.mobile-active {
@@ -1111,11 +1110,26 @@
 
         .project-card {
           grid-template-columns: 1fr;
+          grid-auto-rows: auto;
+          align-items: start;
           padding: 12px;
+          gap: 10px;
+        }
+
+        .project-visual {
+          height: auto;
+          flex-shrink: 0;
+        }
+
+        .project-body {
+          height: auto;
+          justify-content: flex-start;
+          margin-top: 0;
+          padding: 0;
         }
       }
 
-      .project-visual { gap: 10px; }
+      .project-visual { gap: 6px; }
 
       .project-cover {
         aspect-ratio: 2.2 / 1;
@@ -1130,13 +1144,18 @@
         aspect-ratio: 1.22 / 1;
       }
 
-      .project-body { gap: 12px; }
+      .project-body { gap: 9px; }
       .project-title { gap: 8px; }
 
       .project-title h3 {
         font-size: clamp(1.18rem, .98rem + .72vw, 1.46rem);
         line-height: .98;
       }
+
+      .project-body {
+        margin-top: -2px;
+      }
+
 
       .meta-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1686,7 +1705,10 @@
   }
 
   handleResponsiveMode();
-  window.addEventListener('resize', handleResponsiveMode);
+  window.addEventListener('resize', () => {
+    if (mobileRaf) cancelAnimationFrame(mobileRaf);
+    mobileRaf = requestAnimationFrame(handleResponsiveMode);
+  });
 
   const translations = {
     en: {
